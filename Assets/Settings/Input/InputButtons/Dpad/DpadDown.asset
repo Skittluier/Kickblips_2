@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ec8e017a347d34188b4745d7ddf7c1, type: 3}
+  m_Name: DpadDown
+  m_EditorClassIdentifier: 
+  <InputSprite>k__BackingField: {fileID: 21300000, guid: bc4a56140355761449d5ad1ca5ebe2d3, type: 3}
+  <InputActionReference>k__BackingField: {fileID: -4328846831806039228, guid: a794a5a5b0fd3c84faa9f505367501a8, type: 3}
+  <MidiNote>k__BackingField: 64
