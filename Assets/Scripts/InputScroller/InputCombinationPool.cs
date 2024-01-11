@@ -8,6 +8,11 @@ namespace KickblipsTwo.InputScroller
         [SerializeField, Tooltip("The pre-made input combinations.")]
         private List<InputCombination> inputCombinations = new List<InputCombination>();
 
+        /// <summary>
+        /// A list of all the visible input combinations.
+        /// </summary>
+        internal List<InputCombination> VisibleInputCombinations { get; private set; } = new List<InputCombination>();
+
         [SerializeField, Tooltip("The input combination prefab.")]
         private InputCombination inputCombinationPrefab;
 
@@ -25,6 +30,8 @@ namespace KickblipsTwo.InputScroller
                 {
                     inputCombinations[i].transform.position = targetPos;
                     inputCombinations[i].gameObject.SetActive(true);
+                    VisibleInputCombinations.Add(inputCombinations[i]);
+
                     return inputCombinations[i];
                 }
             }
@@ -34,6 +41,7 @@ namespace KickblipsTwo.InputScroller
             inputCombination.transform.position = targetPos;
 
             inputCombinations.Add(inputCombination);
+            VisibleInputCombinations.Add(inputCombination);
 
             return inputCombination;
         }
@@ -46,6 +54,8 @@ namespace KickblipsTwo.InputScroller
         {
             inputCombination.gameObject.SetActive(false);
             inputCombination.transform.position = Vector2.zero;
+
+            VisibleInputCombinations.Remove(inputCombination);
         }
     }
 }

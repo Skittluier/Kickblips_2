@@ -20,14 +20,14 @@ namespace KickblipsTwo.InputScroller
         [SerializeField, Tooltip("The transition time from the moment the input combination is being spawned until the moment the buttons should be pressed.")]
         private float transitionTime = 1;
 
-        [SerializeField, Tooltip("The fade out time of the buttons whenever they pass the input moment.")]
-        private float fadeOutTimeOnSuccessfullPress = 0.5f;
-
         [SerializeField, Tooltip("The position of where the input should start.")]
         private RectTransform inputStartPosition;
 
-        [SerializeField, Tooltip("The position of where the input should be pressed.")]
-        private RectTransform inputTargetPosition;
+        [field: SerializeField, Tooltip("The position of where the input will end.")]
+        private RectTransform inputStopPosition;
+
+        [field: SerializeField, Tooltip("The position of where the input should be pressed.")]
+        internal RectTransform InputTargetPosition { get; private set; }
 
         [SerializeField, Tooltip("The pool with all the input combinations.")]
         private InputCombinationPool inputCombinationPool;
@@ -38,7 +38,9 @@ namespace KickblipsTwo.InputScroller
         /// </summary>
         /// <param name="midiEventOne">The first midi event connected to it</param>
         /// <param name="midiEventTwo">The second midi event connected to it</param>
-        internal void SpawnInputCombination(MidiEvent midiEventOne, MidiEvent midiEventTwo, InputManager inputManager)
+        /// <param name="inputManager">The input manager</param>
+        /// <returns>The input combination being returned.</returns>
+        internal InputCombination SpawnInputCombination(MidiEvent midiEventOne, MidiEvent midiEventTwo, InputManager inputManager)
         {
             // Setting the input combination.
             InputCombination inputCombination = inputCombinationPool.SpawnFromPool(inputStartPosition.position);
@@ -63,7 +65,7 @@ namespace KickblipsTwo.InputScroller
             {
                 float currVal = 0;
                 float startYPos = inputStartPosition.position.y;
-                float targetYPos = inputTargetPosition.position.y;
+                float targetYPos = inputStopPosition.position.y;
 
                 while (currVal < 1)
                 {
@@ -79,6 +81,8 @@ namespace KickblipsTwo.InputScroller
                     yield return null;
                 }
             }
+
+            return inputCombination;
         }
     }
 }

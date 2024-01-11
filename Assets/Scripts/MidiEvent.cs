@@ -1,7 +1,5 @@
 namespace KickblipsTwo
 {
-    using UnityEngine;
-
     /// <summary>
     /// A score registration structure for statistic purposes.
     /// </summary>
@@ -15,7 +13,7 @@ namespace KickblipsTwo
         /// <summary>
         /// The time of the midi event
         /// </summary>
-        internal int Time { get; private set; }
+        internal float Time { get; private set; }
 
         /// <summary>
         /// Was the button combination successfully pressed?
@@ -37,14 +35,14 @@ namespace KickblipsTwo
         /// Initializes the midi event.
         /// </summary>
         /// <param name="midiEvent">The midi event from the midi file.</param>
-        internal MidiEvent(MidiParser.MidiEvent midiEvent)
+        internal MidiEvent(float ticksPerSecond, MidiParser.MidiEvent midiEvent)
         {
             Note = midiEvent.Note;
-            Time = midiEvent.Time;
+            Time = midiEvent.Time / (float)ticksPerSecond;
             IsSuccessfull = false;
             IsPassed = false;
         }
-
+        
         /// <summary>
         /// Registers the midi event as spawned.
         /// </summary>
