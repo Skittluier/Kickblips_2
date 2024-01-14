@@ -3,6 +3,7 @@ namespace KickblipsTwo.InputScroller
     using KickblipsTwo.Managers;
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using UnityEngine;
 
     public class InputScroller : MonoBehaviour
@@ -67,7 +68,7 @@ namespace KickblipsTwo.InputScroller
                 float startYPos = inputStartPosition.position.y;
                 float targetYPos = inputStopPosition.position.y;
 
-                while (currVal < 1)
+                while (currVal < 1 && inputCombination.gameObject.activeInHierarchy)
                 {
                     currVal += Time.deltaTime / transitionTime;
                     inputCombination.transform.position = new Vector2(inputCombination.transform.position.x, Mathf.Lerp(startYPos, targetYPos, currVal));
