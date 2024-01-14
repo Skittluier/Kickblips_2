@@ -20,10 +20,12 @@ namespace KickblipsTwo.InputScroller
         internal void UpdateInputDisplay(KickblipsTwo.Input.Input firstInput, KickblipsTwo.Input.Input secondInput)
         {
             if (firstInput != null)
-                firstInputImg.sprite = firstInput.InputSprite;
+                firstInputImg.sprite = firstInput.GetDeviceVisualInput().inputSprite;
 
             if (secondInput != null)
-                secondInputImg.sprite = secondInput.InputSprite;
+                secondInputImg.sprite = secondInput.GetDeviceVisualInput().inputSprite;
+            else
+                secondInputImg.sprite = firstInputImg.sprite;
         }
     }
 }

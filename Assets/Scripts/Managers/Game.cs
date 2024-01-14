@@ -35,9 +35,6 @@ namespace KickblipsTwo.Managers
         [SerializeField, Tooltip("The maximum distance the checked buttons can have from the target position. After that, 0 points.")]
         private int maxScoreDistance = 130;
 
-        [SerializeField, Tooltip("The maximum distance for input response.")]
-        private int maxInteractionDistance = 300;
-
         /// <summary>
         /// The current score.
         /// </summary>
@@ -54,7 +51,7 @@ namespace KickblipsTwo.Managers
         private bool levelStarted;
 
         /// <summary>
-        /// Checks if the input is correct.
+        /// Gives a message to the game to check the input.
         /// </summary>
         private bool checkInput;
 
@@ -194,7 +191,7 @@ namespace KickblipsTwo.Managers
                     float targetDistanceAbsolute = Mathf.Abs(targetDistance);
 
                     // Calculates the score and possibly give the player a score for this.
-                    if (checkInput && targetDistanceAbsolute < maxInteractionDistance)
+                    if (checkInput)
                     {
                         checkInput = false;
 

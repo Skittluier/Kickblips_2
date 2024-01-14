@@ -92,6 +92,17 @@
                 },
                 {
                     "name": "",
+                    "id": "985b0134-d3bc-4670-88f9-7f2882fdf6d4",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DpadUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "4fd3d507-f3ed-49d8-86a2-5ec3a71e05fe",
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
@@ -126,7 +137,7 @@
                 {
                     "name": "",
                     "id": "663dd3cd-0ff4-4d72-b2f1-2b44152a969f",
-                    "path": "<Keyboard>/x",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
