@@ -16,10 +16,10 @@ MonoBehaviour:
   - <Device>k__BackingField: 3
     inputSprite: {fileID: 21300000, guid: 14186a8146474e24885d52396461a881, type: 3}
   - <Device>k__BackingField: 1
-    inputSprite: {fileID: 21300000, guid: d6a1f1fadfd43494fb576cd607950ec8, type: 3}
+    inputSprite: {fileID: 21300000, guid: d26ecfd14a6a9354a895f35471b54b78, type: 3}
   - <Device>k__BackingField: 0
-    inputSprite: {fileID: 21300000, guid: e571f04764545b44e810616436a9a5dc, type: 3}
+    inputSprite: {fileID: 21300000, guid: 8508796806bc5db4398d6e44df11ed31, type: 3}
   - <Device>k__BackingField: 2
-    inputSprite: {fileID: 21300000, guid: 65be1fb4388dca34397acf7c95927d79, type: 3}
+    inputSprite: {fileID: 21300000, guid: 3dadf90e07235e844ae71313cc7b070f, type: 3}
   <InputActionReference>k__BackingField: {fileID: -6786289379452058867, guid: a794a5a5b0fd3c84faa9f505367501a8, type: 3}
   <MidiNote>k__BackingField: 65
