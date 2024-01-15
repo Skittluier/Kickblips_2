@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Y
   m_EditorClassIdentifier: 
   visualInputs:
-  - <Device>k__BackingField: 3
+  - <DeviceLayout>k__BackingField: 3
     inputSprite: {fileID: 21300000, guid: ec24b84edfd35104c80ba83a0dd6feae, type: 3}
-  - <Device>k__BackingField: 1
+  - <DeviceLayout>k__BackingField: 1
     inputSprite: {fileID: 21300000, guid: b145e71c0f37f1146bbbaeab552f6616, type: 3}
-  - <Device>k__BackingField: 0
+  - <DeviceLayout>k__BackingField: 0
     inputSprite: {fileID: 21300000, guid: a39d4ce4a593f314ea41af09a8fd4fdc, type: 3}
-  - <Device>k__BackingField: 2
+  - <DeviceLayout>k__BackingField: 2
     inputSprite: {fileID: 21300000, guid: 0995a71ec1365574391c858a6346039b, type: 3}
   <InputActionReference>k__BackingField: {fileID: -6571646404993436657, guid: a794a5a5b0fd3c84faa9f505367501a8, type: 3}
   <MidiNote>k__BackingField: 63
