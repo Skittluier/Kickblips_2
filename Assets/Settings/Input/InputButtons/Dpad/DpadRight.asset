@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: DpadRight
   m_EditorClassIdentifier: 
   visualInputs:
-  - <Device>k__BackingField: 3
+  - <DeviceLayout>k__BackingField: 3
     inputSprite: {fileID: 21300000, guid: dd9f912baa8e5834fab62210caf93b9e, type: 3}
-  - <Device>k__BackingField: 1
+  - <DeviceLayout>k__BackingField: 1
     inputSprite: {fileID: 21300000, guid: 4b6a983cee114e842b3fbd19a74b2b6c, type: 3}
-  - <Device>k__BackingField: 0
+  - <DeviceLayout>k__BackingField: 0
     inputSprite: {fileID: 21300000, guid: a320e7761ade3fa4fb240d40053ddf36, type: 3}
-  - <Device>k__BackingField: 2
+  - <DeviceLayout>k__BackingField: 2
     inputSprite: {fileID: 21300000, guid: 5dee46230305baa4294a1cdae9298336, type: 3}
   <InputActionReference>k__BackingField: {fileID: 7499958609944764956, guid: a794a5a5b0fd3c84faa9f505367501a8, type: 3}
   <MidiNote>k__BackingField: 66
