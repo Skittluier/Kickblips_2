@@ -5,6 +5,10 @@ namespace KickblipsTwo.InputScroller
 
     public class InputCombination : MonoBehaviour
     {
+        internal KickblipsTwo.Input.Input FirstInput { get; private set; }
+        internal KickblipsTwo.Input.Input SecondInput { get; private set; }
+
+
         [SerializeField, Tooltip("The first input image.")]
         private Image firstInputImg;
 
@@ -20,10 +24,16 @@ namespace KickblipsTwo.InputScroller
         internal void UpdateInputDisplay(KickblipsTwo.Input.Input firstInput, KickblipsTwo.Input.Input secondInput)
         {
             if (firstInput != null)
+            {
+                FirstInput = firstInput;
                 firstInputImg.sprite = firstInput.GetDeviceVisualInput().inputSprite;
+            }
 
             if (secondInput != null)
+            {
+                SecondInput = secondInput;
                 secondInputImg.sprite = secondInput.GetDeviceVisualInput().inputSprite;
+            }
             else
                 secondInputImg.sprite = firstInputImg.sprite;
         }

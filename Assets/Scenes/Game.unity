@@ -636,7 +636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95f5955c1d1121e4c832304c4380d6a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transitionTime: 1
+  <TransitionTime>k__BackingField: 2
   inputStartPosition: {fileID: 6036645309067822100}
   inputStopPosition: {fileID: 1475171721}
   <InputTargetPosition>k__BackingField: {fileID: 8910385716274132317}
@@ -1705,7 +1705,7 @@ MonoBehaviour:
   inputManager: {fileID: 1238705091}
   scoreCounter: {fileID: 811686233}
   inputCombinationPool: {fileID: 99761742}
-  maxButtonDistance: 135
+  maxScoreDistance: 130
 --- !u!4 &1722282686
 Transform:
   m_ObjectHideFlags: 0
