@@ -7,75 +7,75 @@
             "actions": [
                 {
                     "name": "DpadUp",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "23d4a09b-cc76-43b7-915e-443452c87e0f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "DpadDown",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "5a4cbdfa-2dd6-40ce-bc92-cf3faf9837a1",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "DpadLeft",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "669f1685-f8a3-4d88-b61f-5a8eec691b15",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "DpadRight",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "26d6dc19-1070-4294-9660-ba740f3ee687",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "A",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "c14ba81a-7402-4fc2-9b76-e4a456e9169d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "B",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "20822d1c-0145-47de-81e1-0c0bb68264bb",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "X",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "9f6a843c-2f6d-48e9-bd19-c7282d7650dd",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Y",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "237bc807-106c-4c9e-a718-c092e0a51c29",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [

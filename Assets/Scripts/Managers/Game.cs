@@ -6,12 +6,14 @@ namespace KickblipsTwo.Managers
     using MidiParser;
     using System.Collections;
     using System.Collections.Generic;
+    using Unity.VisualScripting;
     using UnityEngine;
+    using UnityEngine.InputSystem;
 
     public class Game : MonoBehaviour
     {
-        // TODO: Do something about the InputScroller delay with the track start-up.
-        public const float DelayBeforeTrackStart = 0.8593855f;
+        // The time that needs to be retracted from the InputScroller's TransitionTime to correctly start the first beat.
+        public const float InputScrollerCorrectionTime = 0.1406145f;
 
         public static MidiFile midiFile;
 
@@ -117,7 +119,7 @@ namespace KickblipsTwo.Managers
                     {
                         levelStarted = true;
 
-                        yield return new WaitForSeconds(DelayBeforeTrackStart);
+                        yield return new WaitForSeconds(inputScroller.TransitionTime - InputScrollerCorrectionTime);
 
                         musicAudioSource.Play();
                     }
@@ -197,12 +199,19 @@ namespace KickblipsTwo.Managers
 
                         if (targetDistanceAbsolute < maxScoreDistance)
                         {
-                            int scoreAdd = (int)(Mathf.Abs(Mathf.Abs(upcomingInputCombination.transform.position.y - inputScroller.InputTargetPosition.position.y) / maxScoreDistance - 1) * 100);
+                            bool firstInputOK = upcomingInputCombination.FirstInput.InputActionReference.action.ReadValue<float>() >= 0.5f;
+                            bool secondInputOK = upcomingInputCombination.SecondInput == null || (upcomingInputCombination.SecondInput != null && upcomingInputCombination.SecondInput.InputActionReference.action.ReadValue<float>() >= 0.5f);
 
-                            score += scoreAdd;
-                            scoreCounter.UpdateScoreCounter(score);
+                            // If both inputs are fine, then the distance may be calculated for the input score.
+                            if (firstInputOK && secondInputOK)
+                            {
+                                int scoreAdd = (int)(Mathf.Abs(Mathf.Abs(upcomingInputCombination.transform.position.y - inputScroller.InputTargetPosition.position.y) / maxScoreDistance - 1) * 100);
 
-                            inputCombinationPool.ReturnToPool(upcomingInputCombination);
+                                score += scoreAdd;
+                                scoreCounter.UpdateScoreCounter(score);
+
+                                inputCombinationPool.ReturnToPool(upcomingInputCombination);
+                            }
                         }
                     }
                 }

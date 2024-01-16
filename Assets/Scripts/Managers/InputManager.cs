@@ -23,6 +23,19 @@ namespace KickblipsTwo.Managers
         private void Awake()
         {
             CurrentlyUsedDevice = InputSystem.devices.LastOrDefault();
+
+            // Is the mouse the last device connected? Then jump back to the keyboard.
+            if (Equals(CurrentlyUsedDevice.layout, "Mouse"))
+            {
+                string keyboardName = DeviceLayout.Keyboard.ToString();
+                for (int i = 0; i < InputSystem.devices.Count; i++)
+                    if (Equals(InputSystem.devices[i].layout, keyboardName))
+                    {
+                        CurrentlyUsedDevice = InputSystem.devices[i];
+                        break;
+                    }
+            }
+
             InputSystem.onDeviceChange += OnDeviceChange;
         }
 

@@ -4,6 +4,7 @@ namespace KickblipsTwo.InputScroller
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using UnityEngine;
 
     public class InputScroller : MonoBehaviour
@@ -18,8 +19,8 @@ namespace KickblipsTwo.InputScroller
             internal Vector2Int noteRange;
         }
 
-        [SerializeField, Tooltip("The transition time from the moment the input combination is being spawned until the moment the buttons should be pressed.")]
-        private float transitionTime = 1;
+        [field: SerializeField, Tooltip("The transition time from the moment the input combination is being spawned until the moment the buttons should be pressed.")]
+        internal float TransitionTime { get; private set; } = 2;
 
         [SerializeField, Tooltip("The position of where the input should start.")]
         private RectTransform inputStartPosition;
@@ -45,6 +46,7 @@ namespace KickblipsTwo.InputScroller
         {
             // Setting the input combination.
             InputCombination inputCombination = inputCombinationPool.SpawnFromPool(inputStartPosition.position);
+
             KickblipsTwo.Input.Input firstInput = null;
             KickblipsTwo.Input.Input secondInput = null;
 
@@ -70,7 +72,7 @@ namespace KickblipsTwo.InputScroller
 
                 while (currVal < 1 && inputCombination.gameObject.activeInHierarchy)
                 {
-                    currVal += Time.deltaTime / transitionTime;
+                    currVal += Time.deltaTime / TransitionTime;
                     inputCombination.transform.position = new Vector2(inputCombination.transform.position.x, Mathf.Lerp(startYPos, targetYPos, currVal));
 
                     if (currVal >= 1)
