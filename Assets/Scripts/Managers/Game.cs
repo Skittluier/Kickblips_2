@@ -35,8 +35,15 @@ namespace KickblipsTwo.Managers
         [SerializeField, Tooltip("The pool with all the input combinations.")]
         private InputCombinationPool inputCombinationPool;
 
+        [SerializeField, Tooltip("The screen manager which controls... well... all the screens.")]
+        private ScreenManager screenManager;
+
         [SerializeField, Tooltip("The HP bar of the player.")]
         private HPBar hpBar;
+
+        [Header("UI settings")]
+        [SerializeField, Tooltip("The starting screen.")]
+        private UI.Screen.ScreenType screenType;
 
         [Header("Difficulty setting")]
         [SerializeField, Tooltip("The maximum distance the checked buttons can have from the target position. After that, 0 points.")]
@@ -92,72 +99,76 @@ namespace KickblipsTwo.Managers
         /// </summary>
         private void Awake()
         {
-            bool midiFileFetched = false;
-            bool trackFileFetched = false;
+            inputManager.SwitchToUIActionMap();
 
-            FileHandler.HighlightFolder("Calibration");
-            FileHandler.FetchMidi((file) =>
-            {
-                midiFile = file;
+            //bool midiFileFetched = false;
+            //bool trackFileFetched = false;
 
-                // Checking if the midi files can be checked.
-                if (midiFile.TracksCount > 0)
-                {
-                    int bpm = 125;
-                    int ticksPerMinute = bpm * midiFile.TicksPerQuarterNote;
-                    float ticksPerSecond = ticksPerMinute / 60;
+            //FileHandler.HighlightFolder("Calibration");
+            //FileHandler.FetchMidi((file) =>
+            //{
+            //    midiFile = file;
 
-                    // Browsing the entire midi data to fill in critical information.
-                    for (int i = 0; i < midiFile.Tracks.Length; i++)
-                        for (int j = 0; j < midiFile.Tracks[i].MidiEvents.Count; j++)
-                        {
-                            if (midiFile.Tracks[i].MidiEvents[j].MetaEventType == MetaEventType.Tempo)
-                                bpm = midiFile.Tracks[i].MidiEvents[j].Note;
+            //    // Checking if the midi files can be checked.
+            //    if (midiFile.TracksCount > 0)
+            //    {
+            //        int bpm = 125;
+            //        int ticksPerMinute = bpm * midiFile.TicksPerQuarterNote;
+            //        float ticksPerSecond = ticksPerMinute / 60;
 
-                            // Filling the midi events array.
-                            if (midiFile.Tracks[i].MidiEvents[j].MidiEventType == MidiEventType.NoteOn)
-                                midiEvents.Add(new KickblipsTwo.MidiEvent(ticksPerSecond, midiFile.Tracks[i].MidiEvents[j]));
-                        }
+            //        // Browsing the entire midi data to fill in critical information.
+            //        for (int i = 0; i < midiFile.Tracks.Length; i++)
+            //            for (int j = 0; j < midiFile.Tracks[i].MidiEvents.Count; j++)
+            //            {
+            //                if (midiFile.Tracks[i].MidiEvents[j].MetaEventType == MetaEventType.Tempo)
+            //                    bpm = midiFile.Tracks[i].MidiEvents[j].Note;
 
-                    midiFileFetched = true;
-                    CheckForStart();
-                }
-                else
-                    Debug.LogError("[Game] Couldn't play the track, because there are no Midi file tracks.");
-            });
+            //                // Filling the midi events array.
+            //                if (midiFile.Tracks[i].MidiEvents[j].MidiEventType == MidiEventType.NoteOn)
+            //                    midiEvents.Add(new KickblipsTwo.MidiEvent(ticksPerSecond, midiFile.Tracks[i].MidiEvents[j]));
+            //            }
 
-            FileHandler.FetchTrack((file) =>
-            {
-                musicAudioSource.clip = file;
-                trackFileFetched = true;
+            //        midiFileFetched = true;
+            //        CheckForStart();
+            //    }
+            //    else
+            //        Debug.LogError("[Game] Couldn't play the track, because there are no Midi file tracks.");
+            //});
 
-                CheckForStart();
-            });
+            //FileHandler.FetchTrack((file) =>
+            //{
+            //    musicAudioSource.clip = file;
+            //    trackFileFetched = true;
 
-            // Checks if the game can start.
-            void CheckForStart()
-            {
-                if (midiFileFetched && trackFileFetched && !levelStarted)
-                {
-                    StartCoroutine(DoStart());
+            //    CheckForStart();
+            //});
 
-                    // Start the track with a delay.
-                    IEnumerator DoStart()
-                    {
-                        levelStarted = true;
+            //// Checks if the game can start.
+            //void CheckForStart()
+            //{
+            //    if (midiFileFetched && trackFileFetched && !levelStarted)
+            //    {
+            //        StartCoroutine(DoStart());
 
-                        yield return new WaitForSeconds(inputScroller.TransitionTime - InputScrollerCorrectionTime);
+            //        // Start the track with a delay.
+            //        IEnumerator DoStart()
+            //        {
+            //            levelStarted = true;
 
-                        musicAudioSource.Play();
-                    }
-                }
-            }
+            //            yield return new WaitForSeconds(inputScroller.TransitionTime - InputScrollerCorrectionTime);
 
-            for (int i = 0; i < inputManager.PossibleInputs.Length; i++)
-                inputManager.PossibleInputs[i].InputActionReference.action.Enable();
+            //            musicAudioSource.Play();
+            //        }
+            //    }
+            //}
 
-            UnityEngine.InputSystem.InputSystem.onActionChange += OnActionChange;
-            inputCombinationPool.OnReturnToPool += OnReturnToPool;
+            //for (int i = 0; i < inputManager.PossibleNoteInputs.Length; i++)
+            //    inputManager.PossibleNoteInputs[i].InputActionReference.action.Enable();
+
+            //screenManager.ChangeScreen(screenType);
+
+            //UnityEngine.InputSystem.InputSystem.onActionChange += OnActionChange;
+            //inputCombinationPool.OnReturnToPool += OnReturnToPool;
         }
 
         /// <summary>
@@ -168,8 +179,8 @@ namespace KickblipsTwo.Managers
         private void OnActionChange(object arg1, UnityEngine.InputSystem.InputActionChange arg2)
         {
             if (arg2 == UnityEngine.InputSystem.InputActionChange.ActionStarted)
-                for (int i = 0; i < inputManager.PossibleInputs.Length; i++)
-                    if (inputManager.PossibleInputs[i].InputActionReference.action == arg1)
+                for (int i = 0; i < inputManager.PossibleNoteInputs.Length; i++)
+                    if (inputManager.PossibleNoteInputs[i].InputActionReference.action == arg1)
                         checkInput = true;
         }
 
@@ -210,8 +221,8 @@ namespace KickblipsTwo.Managers
         /// </summary>
         private void OnDestroy()
         {
-            for (int i = 0; i < inputManager.PossibleInputs.Length; i++)
-                inputManager.PossibleInputs[i].InputActionReference.action.Disable();
+            for (int i = 0; i < inputManager.PossibleNoteInputs.Length; i++)
+                inputManager.PossibleNoteInputs[i].InputActionReference.action.Disable();
 
             inputCombinationPool.OnReturnToPool -= OnReturnToPool;
         }

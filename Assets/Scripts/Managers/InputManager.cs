@@ -3,6 +3,7 @@ namespace KickblipsTwo.Managers
     using System.Linq;
     using UnityEngine;
     using UnityEngine.InputSystem;
+    using UnityEngine.Serialization;
 
     public class InputManager : MonoBehaviour
     {
@@ -11,10 +12,20 @@ namespace KickblipsTwo.Managers
             XInput, DualShock, Switch, Keyboard, END
         }
 
-        [field: SerializeField, Tooltip("All the possible inputs and their sprites.")]
-        internal KickblipsTwo.Input.Input[] PossibleInputs { get; private set; }
+        [field: SerializeField, Tooltip("All the possible note inputs and their sprites.")]
+        internal KickblipsTwo.Input.Input[] PossibleNoteInputs { get; private set; }
 
         internal static InputDevice CurrentlyUsedDevice { get; private set; }
+
+
+        [SerializeField, Tooltip("The action map for the game.")]
+        private InputActionAsset actionMap;
+
+        [SerializeField, Tooltip("The index within the action map for game input.")]
+        private int gameActionMapNo = 0;
+
+        [SerializeField, Tooltip("The index within the action map for UI input.")]
+        private int uiActionMapNo = 1;
 
 
         /// <summary>
@@ -60,6 +71,34 @@ namespace KickblipsTwo.Managers
             }
             else if (inputDeviceChange == InputDeviceChange.Reconnected || inputDeviceChange == InputDeviceChange.Added)
                 CurrentlyUsedDevice = inputDevice;
+        }
+
+        /// <summary>
+        /// Switches the active input to the game action map.
+        /// </summary>
+        internal void SwitchToGameActionMap()
+        {
+            for (int i = 0; i < actionMap.actionMaps.Count; i++)
+            {
+                if (i == gameActionMapNo)
+                    actionMap.actionMaps[i].Enable();
+                else
+                    actionMap.actionMaps[i].Disable();
+            }
+        }
+
+        /// <summary>
+        /// Switches the active input to the UI action map.
+        /// </summary>
+        internal void SwitchToUIActionMap()
+        {
+            for (int i = 0; i < actionMap.actionMaps.Count; i++)
+            {
+                if (i == uiActionMapNo)
+                    actionMap.actionMaps[i].Enable();
+                else
+                    actionMap.actionMaps[i].Disable();
+            }
         }
     }
 }
