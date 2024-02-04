@@ -5,6 +5,7 @@ namespace KickblipsTwo.InputScroller
 
     public class InputCombination : MonoBehaviour
     {
+        internal uint UID { get; private set; }
         internal KickblipsTwo.Input.Input FirstInput { get; private set; }
         internal KickblipsTwo.Input.Input SecondInput { get; private set; }
 
@@ -15,6 +16,15 @@ namespace KickblipsTwo.InputScroller
         [SerializeField, Tooltip("The second input image.")]
         private Image secondInputImg;
 
+
+        /// <summary>
+        /// Set-up the InputCombination for their unique ID.
+        /// </summary>
+        /// <param name="uid">The unique ID of the input combination</param>
+        internal void Setup(uint uid)
+        {
+            UID = uid;
+        }
 
         /// <summary>
         /// Updates the input images.
