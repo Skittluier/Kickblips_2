@@ -51,14 +51,14 @@ namespace KickblipsTwo.InputScroller
             KickblipsTwo.Input.Input secondInput = null;
 
             if (midiEventOne != null)
-                for (int i = 0; i < inputManager.PossibleInputs.Length; i++)
-                    if (inputManager.PossibleInputs[i].MidiNote == midiEventOne.Note)
-                        firstInput = inputManager.PossibleInputs[i];
+                for (int i = 0; i < inputManager.PossibleNoteInputs.Length; i++)
+                    if (inputManager.PossibleNoteInputs[i].MidiNote == midiEventOne.Note)
+                        firstInput = inputManager.PossibleNoteInputs[i];
 
             if (midiEventTwo != null)
-                for (int i = 0; i < inputManager.PossibleInputs.Length; i++)
-                    if (inputManager.PossibleInputs[i].MidiNote == midiEventTwo.Note)
-                        secondInput = inputManager.PossibleInputs[i];
+                for (int i = 0; i < inputManager.PossibleNoteInputs.Length; i++)
+                    if (inputManager.PossibleNoteInputs[i].MidiNote == midiEventTwo.Note)
+                        secondInput = inputManager.PossibleNoteInputs[i];
 
             inputCombination.UpdateInputDisplay(firstInput, secondInput);
 
