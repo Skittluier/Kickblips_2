@@ -317,7 +317,6 @@ namespace KickblipsTwo.Managers
                             // Listen to input with a duration.
                             ListenToInput((inputIsOK) =>
                             {
-                                Debug.Log(inputIsOK);
                                 upcomingInputCombinationHit = true;
 
                                 // If both inputs are fine, then the distance may be calculated for the input score.
