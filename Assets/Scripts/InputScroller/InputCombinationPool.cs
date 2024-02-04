@@ -5,6 +5,8 @@ namespace KickblipsTwo.InputScroller
 
     public class InputCombinationPool : MonoBehaviour
     {
+        private uint lastKnownUID;
+
         [SerializeField, Tooltip("The pre-made input combinations.")]
         private List<InputCombination> inputCombinations = new List<InputCombination>();
 
@@ -15,6 +17,9 @@ namespace KickblipsTwo.InputScroller
 
         [SerializeField, Tooltip("The input combination prefab.")]
         private InputCombination inputCombinationPrefab;
+
+        internal delegate void OnReturnToPoolMethod(InputCombination inputCombination);
+        internal OnReturnToPoolMethod OnReturnToPool;
 
 
         /// <summary>
@@ -30,6 +35,10 @@ namespace KickblipsTwo.InputScroller
                 {
                     inputCombinations[i].transform.position = targetPos;
                     inputCombinations[i].gameObject.SetActive(true);
+
+                    inputCombinations[i].Setup(lastKnownUID);
+                    lastKnownUID++;
+
                     VisibleInputCombinations.Add(inputCombinations[i]);
 
                     return inputCombinations[i];
@@ -39,6 +48,8 @@ namespace KickblipsTwo.InputScroller
             // This is the moment where no game objects are available. So we'll just make the pool larger.
             InputCombination inputCombination = Instantiate(inputCombinationPrefab);
             inputCombination.transform.position = targetPos;
+            inputCombination.Setup(lastKnownUID);
+            lastKnownUID++;
 
             inputCombinations.Add(inputCombination);
             VisibleInputCombinations.Add(inputCombination);
@@ -56,6 +67,8 @@ namespace KickblipsTwo.InputScroller
             inputCombination.transform.position = Vector2.zero;
 
             VisibleInputCombinations.Remove(inputCombination);
+
+            OnReturnToPool?.Invoke(inputCombination);
         }
     }
 }
