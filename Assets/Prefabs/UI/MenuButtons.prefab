@@ -439,7 +439,7 @@ GameObject:
   - component: {fileID: 7043130806412596991}
   - component: {fileID: 1428574194287095224}
   m_Layer: 0
-  m_Name: Options
+  m_Name: RightTopButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

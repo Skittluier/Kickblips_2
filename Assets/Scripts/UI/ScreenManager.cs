@@ -8,6 +8,7 @@ namespace KickblipsTwo.UI
         private Screen[] screens;
 
         private Screen activeScreen;
+        private Screen previousScreen;
 
 
         /// <summary>
@@ -16,7 +17,15 @@ namespace KickblipsTwo.UI
         private void Awake()
         {
             for (int i = 0; i < screens.Length; i++)
+            {
+                if (i == 0)
+                {
+                    activeScreen = screens[i];
+                    previousScreen = screens[i];
+                }
+
                 screens[i].Setup(this);
+            }
         }
 
         /// <summary>
@@ -32,6 +41,7 @@ namespace KickblipsTwo.UI
                     if (activeScreen != null)
                         activeScreen.gameObject.SetActive(false);
 
+                    previousScreen = activeScreen;
                     activeScreen = screens[i];
                     activeScreen.gameObject.SetActive(true);
 
@@ -40,6 +50,14 @@ namespace KickblipsTwo.UI
                 else
                     screens[i].gameObject.SetActive(false);
             }
+        }
+
+        /// <summary>
+        /// Goes to the previous screen.
+        /// </summary>
+        internal void GoToPreviousScreen()
+        {
+            ChangeScreen(previousScreen.Type);
         }
     }
 }

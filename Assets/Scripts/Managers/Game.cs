@@ -11,6 +11,8 @@ namespace KickblipsTwo.Managers
 
     public class Game : MonoBehaviour
     {
+        internal static Game Instance { get; private set; }
+
         // The time that needs to be retracted from the InputScroller's TransitionTime to correctly start the first beat.
         public const float InputScrollerCorrectionTime = 0.1406145f;
 
@@ -26,11 +28,11 @@ namespace KickblipsTwo.Managers
         [SerializeField, Tooltip("The input manager.")]
         private InputManager inputManager;
 
-        [SerializeField, Tooltip("The score counter.")]
-        private ScoreCounter scoreCounter;
+        [field: SerializeField, Tooltip("The score counter.")]
+        internal ScoreCounter ScoreCounter { get; private set; }
 
-        [SerializeField, Tooltip("The combo counter.")]
-        private ComboCounter comboCounter;
+        [field: SerializeField, Tooltip("The combo counter.")]
+        internal ComboCounter ComboCounter { get; private set; }
 
         [SerializeField, Tooltip("The pool with all the input combinations.")]
         private InputCombinationPool inputCombinationPool;
@@ -38,12 +40,15 @@ namespace KickblipsTwo.Managers
         [SerializeField, Tooltip("The screen manager which controls... well... all the screens.")]
         private ScreenManager screenManager;
 
-        [SerializeField, Tooltip("The HP bar of the player.")]
-        private HPBar hpBar;
+        [field: SerializeField, Tooltip("The HP bar of the player.")]
+        internal HPBar HPBar { get; private set; }
 
         [Header("UI settings")]
         [SerializeField, Tooltip("The starting screen.")]
         private UI.Screen.ScreenType screenType;
+
+        [SerializeField, Tooltip("The delay after the final note until the results screen pops up.")]
+        private int resultsScreenPopUpDelay = 2;
 
         [Header("Difficulty setting")]
         [SerializeField, Tooltip("The maximum distance the checked buttons can have from the target position. After that, 0 points.")]
@@ -63,16 +68,6 @@ namespace KickblipsTwo.Managers
         private int hpDepletionAmount = 5;
 
         /// <summary>
-        /// The current score.
-        /// </summary>
-        private int score;
-
-        /// <summary>
-        /// The health of the player. 0 = game over.
-        /// </summary>
-        private int playerHealth = 100;
-
-        /// <summary>
         /// The start time of the track within the game time.
         /// </summary>
         private float levelStartTime;
@@ -88,6 +83,10 @@ namespace KickblipsTwo.Managers
         private bool checkInput;
 
         private List<KickblipsTwo.MidiEvent> midiEvents = new List<KickblipsTwo.MidiEvent>();
+        internal int TotalNotes => midiEvents.Count;
+        internal int NotesHit { get; private set; }
+
+        internal string CurrentDifficulty { get; private set; }
 
         private InputCombination upcomingInputCombination;
         private uint upcomingInputCombinationUID;
@@ -99,76 +98,118 @@ namespace KickblipsTwo.Managers
         /// </summary>
         private void Awake()
         {
+            // Setting up the singleton.
+            if (Instance == null)
+                Instance = this;
+            else
+            {
+                Debug.LogError("[Game] There is more than 1 Game in the scene. Check out what's up!");
+                Destroy(this);
+            }
+
             inputManager.SwitchToUIActionMap();
+            inputCombinationPool.OnReturnToPool += OnReturnToPool;
+            UnityEngine.InputSystem.InputSystem.onActionChange += OnActionChange;
+        }
 
-            //bool midiFileFetched = false;
-            //bool trackFileFetched = false;
+        /// <summary>
+        /// Prepares everything and then plays the song.
+        /// </summary>
+        /// <param name="songTitle">The title of the song according to the StreamingAssets folder</param>
+        internal void PlaySong(string songTitle)
+        {
+            bool midiFileFetched = false;
+            bool trackFileFetched = false;
 
-            //FileHandler.HighlightFolder("Calibration");
-            //FileHandler.FetchMidi((file) =>
-            //{
-            //    midiFile = file;
+            FileHandler.HighlightFolder(songTitle);
+            FileHandler.FetchMidi((file) =>
+            {
+                midiFile = file;
 
-            //    // Checking if the midi files can be checked.
-            //    if (midiFile.TracksCount > 0)
-            //    {
-            //        int bpm = 125;
-            //        int ticksPerMinute = bpm * midiFile.TicksPerQuarterNote;
-            //        float ticksPerSecond = ticksPerMinute / 60;
+                // Checking if the midi files can be checked.
+                if (midiFile.TracksCount > 0)
+                {
+                    int bpm = 125;
+                    int ticksPerMinute = bpm * midiFile.TicksPerQuarterNote;
+                    float ticksPerSecond = ticksPerMinute / 60;
 
-            //        // Browsing the entire midi data to fill in critical information.
-            //        for (int i = 0; i < midiFile.Tracks.Length; i++)
-            //            for (int j = 0; j < midiFile.Tracks[i].MidiEvents.Count; j++)
-            //            {
-            //                if (midiFile.Tracks[i].MidiEvents[j].MetaEventType == MetaEventType.Tempo)
-            //                    bpm = midiFile.Tracks[i].MidiEvents[j].Note;
+                    // Browsing the entire midi data to fill in critical information.
+                    for (int i = 0; i < midiFile.Tracks.Length; i++)
+                        for (int j = 0; j < midiFile.Tracks[i].MidiEvents.Count; j++)
+                        {
+                            if (midiFile.Tracks[i].MidiEvents[j].MetaEventType == MetaEventType.Tempo)
+                                bpm = midiFile.Tracks[i].MidiEvents[j].Note;
 
-            //                // Filling the midi events array.
-            //                if (midiFile.Tracks[i].MidiEvents[j].MidiEventType == MidiEventType.NoteOn)
-            //                    midiEvents.Add(new KickblipsTwo.MidiEvent(ticksPerSecond, midiFile.Tracks[i].MidiEvents[j]));
-            //            }
+                            // Filling the midi events array.
+                            if (midiFile.Tracks[i].MidiEvents[j].MidiEventType == MidiEventType.NoteOn)
+                                midiEvents.Add(new KickblipsTwo.MidiEvent(ticksPerSecond, midiFile.Tracks[i].MidiEvents[j]));
+                        }
 
-            //        midiFileFetched = true;
-            //        CheckForStart();
-            //    }
-            //    else
-            //        Debug.LogError("[Game] Couldn't play the track, because there are no Midi file tracks.");
-            //});
+                    midiFileFetched = true;
+                    CheckForStart();
+                }
+                else
+                    Debug.LogError("[Game] Couldn't play the track, because there are no Midi file tracks.");
+            });
 
-            //FileHandler.FetchTrack((file) =>
-            //{
-            //    musicAudioSource.clip = file;
-            //    trackFileFetched = true;
+            FileHandler.FetchTrack((file) =>
+            {
+                musicAudioSource.clip = file;
+                trackFileFetched = true;
 
-            //    CheckForStart();
-            //});
+                CheckForStart();
+            });
 
-            //// Checks if the game can start.
-            //void CheckForStart()
-            //{
-            //    if (midiFileFetched && trackFileFetched && !levelStarted)
-            //    {
-            //        StartCoroutine(DoStart());
+            // Checks if the game can start.
+            void CheckForStart()
+            {
+                if (midiFileFetched && trackFileFetched && !levelStarted)
+                {
+                    StartCoroutine(DoStart());
 
-            //        // Start the track with a delay.
-            //        IEnumerator DoStart()
-            //        {
-            //            levelStarted = true;
+                    // Start the track with a delay.
+                    IEnumerator DoStart()
+                    {
+                        // Recover the HP.
+                        HPBar.UpdateHPBarStatus(HPBar.defaultPlayerHealth);
 
-            //            yield return new WaitForSeconds(inputScroller.TransitionTime - InputScrollerCorrectionTime);
+                        // Reset all the other values.
+                        levelStartTime = 0;
+                        listenToInputEndTime = 0;
+                        NotesHit = 0;
+                        checkInput = default;
+                        upcomingInputCombination = null;
+                        upcomingInputCombinationUID = default;
+                        upcomingInputCombinationHit = default;
+                        ScoreCounter.UpdateScoreCounter(0);
+                        ComboCounter.ResetEverything();
 
-            //            musicAudioSource.Play();
-            //        }
-            //    }
-            //}
+                        if (inputListenCoroutine != null)
+                        {
+                            StopCoroutine(inputListenCoroutine);
+                            inputListenCoroutine = null;
+                        }
 
-            //for (int i = 0; i < inputManager.PossibleNoteInputs.Length; i++)
-            //    inputManager.PossibleNoteInputs[i].InputActionReference.action.Enable();
+                        levelStarted = true;
 
-            //screenManager.ChangeScreen(screenType);
+                        yield return new WaitForSeconds(inputScroller.TransitionTime - InputScrollerCorrectionTime);
 
-            //UnityEngine.InputSystem.InputSystem.onActionChange += OnActionChange;
-            //inputCombinationPool.OnReturnToPool += OnReturnToPool;
+                        musicAudioSource.Play();
+                        StartCoroutine(DoStopSongDelayed());
+                        
+                        IEnumerator DoStopSongDelayed()
+                        {
+                            yield return new WaitForSeconds(musicAudioSource.clip.length);
+                            StopSong();
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < inputManager.PossibleNoteInputs.Length; i++)
+                inputManager.PossibleNoteInputs[i].InputActionReference.action.Enable();
+
+            screenManager.ChangeScreen(UI.Screen.ScreenType.Game);
         }
 
         /// <summary>
@@ -190,6 +231,35 @@ namespace KickblipsTwo.Managers
         private void NoHealthLeft()
         {
             Debug.Log("[Game] No HP left!");
+            StopSong(true);
+        }
+
+        /// <summary>
+        /// Stops the song (and thus game) and shows the results screen instantly.
+        /// </summary>
+        /// <param name="immediateStop">Immediately stops everything and shows the result screen.</param>
+        private void StopSong(bool immediateStop = false)
+        {
+            levelStarted = false;
+            musicAudioSource.Stop();
+
+            StartCoroutine(DoStopSong(immediateStop));
+            IEnumerator DoStopSong(bool immediateStop = false)
+            {
+                if (!immediateStop)
+                    yield return new WaitForSeconds(resultsScreenPopUpDelay);
+
+                // Change the screen to the results screen.
+                screenManager.ChangeScreen(UI.Screen.ScreenType.Results);
+
+                // Disable all possible game input.
+                for (int i = 0; i < inputManager.PossibleNoteInputs.Length; i++)
+                    inputManager.PossibleNoteInputs[i].InputActionReference.action.Disable();
+
+                // Return the visible input combinations.
+                while (inputCombinationPool.VisibleInputCombinations.Count > 0)
+                    inputCombinationPool.ReturnToPool(inputCombinationPool.VisibleInputCombinations[0]);
+            }
         }
 
         /// <summary>
@@ -201,12 +271,11 @@ namespace KickblipsTwo.Managers
             if (Equals(inputCombination.UID, upcomingInputCombinationUID) && !upcomingInputCombinationHit)
             {
                 // If the upcoming input combination isn't null and it's already despawned, then punish the player.
-                playerHealth = Mathf.Clamp(playerHealth - hpDepletionAmount, 0, 100);
-                hpBar.UpdateHPBarStatus(playerHealth);
-                comboCounter.ResetCombo();
+                HPBar.UpdateHPBarStatus(Mathf.Clamp(HPBar.PlayerHealth - hpDepletionAmount, 0, 100));
+                ComboCounter.ResetCombo();
 
                 // Player health 0? Then you lose, if 
-                if (playerHealth <= 0)
+                if (HPBar.PlayerHealth <= 0)
                     NoHealthLeft();
             }
 
@@ -224,7 +293,10 @@ namespace KickblipsTwo.Managers
             for (int i = 0; i < inputManager.PossibleNoteInputs.Length; i++)
                 inputManager.PossibleNoteInputs[i].InputActionReference.action.Disable();
 
+            UnityEngine.InputSystem.InputSystem.onActionChange -= OnActionChange;
             inputCombinationPool.OnReturnToPool -= OnReturnToPool;
+
+            Instance = null;
         }
 
         /// <summary>
@@ -335,12 +407,13 @@ namespace KickblipsTwo.Managers
                                 {
                                     int scoreAdd = (int)(Mathf.Abs(Mathf.Abs(upcomingInputCombination.transform.position.y - inputScroller.InputTargetPosition.position.y) / maxScoreDistance - 1) * 100);
 
-                                    score += scoreAdd;
-                                    scoreCounter.UpdateScoreCounter(score);
-                                    comboCounter.IncreaseComboCount();
+                                    NotesHit++;
+
+                                    ScoreCounter.UpdateScoreCounter(ScoreCounter.Score + scoreAdd);
+                                    ComboCounter.IncreaseComboCount();
 
                                     inputCombinationPool.ReturnToPool(upcomingInputCombination);
-                                    playerHealth = Mathf.Clamp(playerHealth + hpRecoveryAmount, 0, 100);
+                                    HPBar.UpdateHPBarStatus(Mathf.Clamp(HPBar.PlayerHealth + hpRecoveryAmount, 0, 100));
 
                                     upcomingInputCombination = inputCombinationPool.VisibleInputCombinations.Count > 0 ? inputCombinationPool.VisibleInputCombinations[0] : null;
                                     upcomingInputCombinationUID = upcomingInputCombination == null ? 0 : upcomingInputCombination.UID;
@@ -349,12 +422,10 @@ namespace KickblipsTwo.Managers
                                 }
                                 else
                                 {
-                                    playerHealth = Mathf.Clamp(playerHealth - hpDepletionAmount, 0, 100);
-                                    comboCounter.ResetCombo();
+                                    HPBar.UpdateHPBarStatus(Mathf.Clamp(HPBar.PlayerHealth - hpDepletionAmount, 0, 100));
+                                    ComboCounter.ResetCombo();
                                     StopListeningToInput();
                                 }
-
-                                hpBar.UpdateHPBarStatus(playerHealth);
                             });
                         }
                     }

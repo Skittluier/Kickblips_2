@@ -6,7 +6,7 @@ namespace KickblipsTwo.UI
     {
         internal enum ScreenType
         {
-            Title, SongSelect, Options, Game, PopUp
+            Title, SongSelect, Options, Game, PopUp, Results
         }
 
         [field: SerializeField, Tooltip("The screen type")]
