@@ -1,7 +1,6 @@
 namespace KickblipsTwo.IO
 {
     using KickblipsTwo.Extensions;
-    using KickblipsTwo.Managers;
     using MidiParser;
     using System;
     using System.IO;
@@ -14,7 +13,7 @@ namespace KickblipsTwo.IO
         /// <summary>
         /// The default music folder location for all the music we're looking for.
         /// </summary>
-        private const string DefaultMusicFolder = "Music";
+        internal const string DefaultMusicFolder = "Music";
 
         /// <summary>
         /// The current highlighted folder.

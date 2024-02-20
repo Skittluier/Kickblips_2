@@ -20,7 +20,7 @@ namespace KickblipsTwo.UI
         private string currentComboTextFormat = "{0}X";
 
         private int currentComboNo = 0;
-        private int comboHighscoreNo = 0;
+        internal int ComboHighscoreNo { get; private set; } = 0;
 
 
         /// <summary>
@@ -31,10 +31,10 @@ namespace KickblipsTwo.UI
             currentComboNo++;
 
             // Updating the highscore, if necessary.
-            if (currentComboNo > comboHighscoreNo)
+            if (currentComboNo > ComboHighscoreNo)
             {
-                comboHighscoreNo = currentComboNo;
-                comboHighscore.text = string.Format(comboHighscoreTextFormat, comboHighscoreNo);
+                ComboHighscoreNo = currentComboNo;
+                comboHighscore.text = string.Format(comboHighscoreTextFormat, ComboHighscoreNo);
             }
 
             currentComboScore.text = string.Format(currentComboTextFormat, currentComboNo);
@@ -47,6 +47,17 @@ namespace KickblipsTwo.UI
         {
             currentComboNo = 0;
             currentComboScore.text = string.Format(currentComboTextFormat, currentComboNo);
+        }
+
+        /// <summary>
+        /// Resets the current combo counter as well as the combo highscore.
+        /// </summary>
+        internal void ResetEverything()
+        {
+            ResetCombo();
+
+            ComboHighscoreNo = 0;
+            comboHighscore.text = string.Format(comboHighscoreTextFormat, ComboHighscoreNo);
         }
     }
 }
