@@ -1,5 +1,7 @@
-namespace KickblipsTwo.Managers
+namespace KickblipsTwo
 {
+    using KickblipsTwo.Audio;
+    using KickblipsTwo.Input;
     using KickblipsTwo.InputScroller;
     using KickblipsTwo.IO;
     using KickblipsTwo.UI;
@@ -11,6 +13,8 @@ namespace KickblipsTwo.Managers
 
     public class Game : MonoBehaviour
     {
+        internal const string ResolutionPlayerPrefsKey = "Game_ResolutionIndex";
+
         internal static Game Instance { get; private set; }
 
         // The time that needs to be retracted from the InputScroller's TransitionTime to correctly start the first beat.
@@ -20,13 +24,13 @@ namespace KickblipsTwo.Managers
 
         [Header("References")]
         [SerializeField, Tooltip("The input scroller for pressing the right buttons.")]
-        private InputScroller inputScroller;
-
-        [SerializeField, Tooltip("The audio source being played for the song.")]
-        private AudioSource musicAudioSource;
+        private InputScroller.InputScroller inputScroller;
 
         [SerializeField, Tooltip("The input manager.")]
         private InputManager inputManager;
+
+        [field: SerializeField, Tooltip("The audio manager.")]
+        internal AudioManager AudioManager { get; private set; }
 
         [field: SerializeField, Tooltip("The score counter.")]
         internal ScoreCounter ScoreCounter { get; private set; }
@@ -154,7 +158,7 @@ namespace KickblipsTwo.Managers
 
             FileHandler.FetchTrack((file) =>
             {
-                musicAudioSource.clip = file;
+                AudioManager.SetMusicClip(file);
                 trackFileFetched = true;
 
                 CheckForStart();
@@ -194,12 +198,12 @@ namespace KickblipsTwo.Managers
 
                         yield return new WaitForSeconds(inputScroller.TransitionTime - InputScrollerCorrectionTime);
 
-                        musicAudioSource.Play();
+                        AudioManager.PlayMusic();
                         StartCoroutine(DoStopSongDelayed());
-                        
+
                         IEnumerator DoStopSongDelayed()
                         {
-                            yield return new WaitForSeconds(musicAudioSource.clip.length);
+                            yield return new WaitForSeconds(AudioManager.GetMusicClipLength());
                             StopSong();
                         }
                     }
@@ -241,7 +245,7 @@ namespace KickblipsTwo.Managers
         private void StopSong(bool immediateStop = false)
         {
             levelStarted = false;
-            musicAudioSource.Stop();
+            AudioManager.StopMusic();
 
             StartCoroutine(DoStopSong(immediateStop));
             IEnumerator DoStopSong(bool immediateStop = false)

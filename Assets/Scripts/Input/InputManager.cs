@@ -1,9 +1,8 @@
-namespace KickblipsTwo.Managers
+namespace KickblipsTwo.Input
 {
     using System.Linq;
     using UnityEngine;
     using UnityEngine.InputSystem;
-    using UnityEngine.Serialization;
 
     public class InputManager : MonoBehaviour
     {
@@ -13,7 +12,7 @@ namespace KickblipsTwo.Managers
         }
 
         [field: SerializeField, Tooltip("All the possible note inputs and their sprites.")]
-        internal KickblipsTwo.Input.Input[] PossibleNoteInputs { get; private set; }
+        internal Input[] PossibleNoteInputs { get; private set; }
 
         internal static InputDevice CurrentlyUsedDevice { get; private set; }
 

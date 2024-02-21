@@ -1,6 +1,6 @@
 namespace KickblipsTwo.UI.Screens
 {
-    using KickblipsTwo.Managers;
+    using KickblipsTwo.Input;
     using System.Collections;
     using UnityEngine;
     using UnityEngine.UI;
