@@ -1,10 +1,8 @@
 namespace KickblipsTwo.InputScroller
 {
-    using KickblipsTwo.Managers;
+    using KickblipsTwo.Input;
     using System;
     using System.Collections;
-    using System.Collections.Generic;
-    using System.ComponentModel;
     using UnityEngine;
 
     public class InputScroller : MonoBehaviour
@@ -13,7 +11,7 @@ namespace KickblipsTwo.InputScroller
         public struct InputRange
         {
             [SerializeField, Tooltip("The button that will be used with this range.")]
-            internal Input button;
+            internal KickblipsTwo.Input.Input button;
 
             [SerializeField, Tooltip("The note range belonging to this button.")]
             internal Vector2Int noteRange;

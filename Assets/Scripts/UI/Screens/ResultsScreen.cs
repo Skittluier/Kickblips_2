@@ -1,7 +1,6 @@
 namespace KickblipsTwo.UI.Screens
 {
     using KickblipsTwo.IO;
-    using KickblipsTwo.Managers;
     using TMPro;
     using UnityEngine;
     using UnityEngine.UI;

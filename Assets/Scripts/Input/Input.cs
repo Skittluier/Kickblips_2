@@ -1,6 +1,5 @@
 namespace KickblipsTwo.Input
 {
-    using KickblipsTwo.Managers;
     using System;
     using UnityEngine;
     using UnityEngine.InputSystem;
