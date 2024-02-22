@@ -54,6 +54,18 @@ namespace KickblipsTwo.UI.Screens
         [SerializeField, Tooltip("The formatting of the SFX slider text.\n{0} = Value in decibels")]
         private string sfxSliderValueFormat = "{0:0} dB";
 
+        [SerializeField, Tooltip("The title for the pop-up when changing the resolution.")]
+        private string changeResolutionConfirmTitle = "Change Resolution";
+
+        [SerializeField, Tooltip("The resolution change confirmation text.\n{0}: Resolution width\n{1}: Resolution height")]
+        private string changeResolutionConfirmMessage = "Are you sure you want to change the resolution to:\n\n{0}x{1}";
+
+        [SerializeField, Tooltip("The title for the pop-up when resetting the data.")]
+        private string dataResetConfirmTitle = "COMPLETE Data Reset";
+
+        [SerializeField, Tooltip("The data reset confirmation message.")]
+        private string dataResetConfirmMessage = "Are you sure you want to reset ALL YOUR DATA?\n It will be FOREVER lost and can never be recovered anymore!!";
+
         private Coroutine musicFadeCoroutine;
 
 
@@ -70,15 +82,29 @@ namespace KickblipsTwo.UI.Screens
             resolutionDropDown.onValueChanged.AddListener(OnResolutionValueChanged);
             resetDataButton.onClick.AddListener(OnResetDataPressed);
 
-            resolutionDropDown.ClearOptions();
-            for (int i = 0; i < Screen.resolutions.Length; i++)
-                resolutionDropDown.options.Add(new TMP_Dropdown.OptionData() { text = string.Format("{0}x{1}", Screen.resolutions[i].width, Screen.resolutions[i].height) });
-
             OnMusicSliderValueChanged(PlayerPrefs.GetFloat(AudioManager.MusicVolumePlayerPrefsKey, 0));
             OnSFXSliderValueChanged(PlayerPrefs.GetFloat(AudioManager.SFXVolumePlayerPrefsKey, 0));
 
-            OnResolutionValueChanged(PlayerPrefs.GetInt(Game.ResolutionPlayerPrefsKey, 0));
-            resolutionDropDown.SetValueWithoutNotify(PlayerPrefs.GetInt(Game.ResolutionPlayerPrefsKey, 0));
+            // Setting up the resolution option.
+            resolutionDropDown.ClearOptions();
+
+            int currentResolutionIndex = 0;
+            for (int i = 0; i < Screen.resolutions.Length; i++)
+            {
+                resolutionDropDown.options.Add(new TMP_Dropdown.OptionData() { text = string.Format("{0}x{1}", Screen.resolutions[i].width, Screen.resolutions[i].height) });
+
+                if (Screen.resolutions[i].width == Screen.currentResolution.width && Screen.resolutions[i].height == Screen.currentResolution.height && !PlayerPrefs.HasKey(Game.ResolutionPlayerPrefsKey))
+                    currentResolutionIndex = i;
+            }
+
+            if (PlayerPrefs.HasKey(Game.ResolutionPlayerPrefsKey))
+            {
+                currentResolutionIndex = PlayerPrefs.GetInt(Game.ResolutionPlayerPrefsKey);
+                Resolution resolution = Screen.resolutions[currentResolutionIndex];
+                Screen.SetResolution(resolution.width, resolution.height, true);
+            }
+
+            resolutionDropDown.SetValueWithoutNotify(currentResolutionIndex);
         }
 
         /// <summary>
@@ -151,12 +177,40 @@ namespace KickblipsTwo.UI.Screens
         /// Will be called whenever the resolution value has been changed.
         /// </summary>
         /// <param name="value">The new resolution</param>
+        /// <param name="showPopUp">Should a pop-up been shown?</param>
         private void OnResolutionValueChanged(int value)
         {
             Resolution resolution = Screen.resolutions[value];
             Screen.SetResolution(resolution.width, resolution.height, true);
 
-            PlayerPrefs.SetInt(Game.ResolutionPlayerPrefsKey, value);
+            string popUpDescription = string.Format(changeResolutionConfirmMessage, resolution.width, resolution.height);
+
+            ScreenManager.ShowPopUp(new PopUpScreen.PopUpScreenSettings()
+            {
+                Title = changeResolutionConfirmTitle,
+                Description = popUpDescription,
+                LeftButtonSettings = new PopUpScreen.PopUpScreenButtonSettings()
+                {
+                    ButtonName = "No",
+                    ButtonAction = () =>
+                    {
+                        Resolution oldResolution = Screen.resolutions[PlayerPrefs.GetInt(Game.ResolutionPlayerPrefsKey, 0)];
+                        Screen.SetResolution(oldResolution.width, oldResolution.height, true);
+
+                        ScreenManager.ClosePopUp();
+                    }
+                },
+                RightButtonSettings = new PopUpScreen.PopUpScreenButtonSettings()
+                {
+                    ButtonName = "Yes",
+                    ButtonAction = () =>
+                    {
+                        PlayerPrefs.SetInt(Game.ResolutionPlayerPrefsKey, value);
+
+                        ScreenManager.ClosePopUp();
+                    }
+                }
+            });
         }
 
         /// <summary>
@@ -164,12 +218,29 @@ namespace KickblipsTwo.UI.Screens
         /// </summary>
         private void OnResetDataPressed()
         {
-            PlayerPrefs.DeleteAll();
+            ScreenManager.ShowPopUp(new PopUpScreen.PopUpScreenSettings()
+            {
+                Title = dataResetConfirmTitle,
+                Description = dataResetConfirmMessage,
+                LeftButtonSettings = new PopUpScreen.PopUpScreenButtonSettings()
+                {
+                    ButtonName = "No",
+                    ButtonAction = ScreenManager.ClosePopUp
+                },
+                RightButtonSettings = new PopUpScreen.PopUpScreenButtonSettings()
+                {
+                    ButtonName = "Yes",
+                    ButtonAction = () =>
+                    {
+                        PlayerPrefs.DeleteAll();
 
-            OnMusicSliderValueChanged(PlayerPrefs.GetFloat(AudioManager.MusicVolumePlayerPrefsKey, 0));
-            OnSFXSliderValueChanged(PlayerPrefs.GetFloat(AudioManager.SFXVolumePlayerPrefsKey, 0));
-            OnResolutionValueChanged(PlayerPrefs.GetInt(Game.ResolutionPlayerPrefsKey, 0));
-            resolutionDropDown.SetValueWithoutNotify(PlayerPrefs.GetInt(Game.ResolutionPlayerPrefsKey, 0));
+                        OnMusicSliderValueChanged(PlayerPrefs.GetFloat(AudioManager.MusicVolumePlayerPrefsKey, 0));
+                        OnSFXSliderValueChanged(PlayerPrefs.GetFloat(AudioManager.SFXVolumePlayerPrefsKey, 0));
+
+                        ScreenManager.ClosePopUp();
+                    }
+                }
+            });
         }
     }
 }
