@@ -1,6 +1,8 @@
 namespace KickblipsTwo.UI
 {
+    using KickblipsTwo.UI.Screens;
     using UnityEngine;
+    using static KickblipsTwo.UI.Screens.PopUpScreen;
 
     public class ScreenManager : MonoBehaviour
     {
@@ -49,6 +51,38 @@ namespace KickblipsTwo.UI
                 }
                 else
                     screens[i].gameObject.SetActive(false);
+            }
+        }
+
+        /// <summary>
+        /// Shows a pop-up in front of the UI.
+        /// </summary>
+        /// <param name="buttonSettings">The pop-up screen button settings</param>
+        internal void ShowPopUp(PopUpScreenSettings buttonSettings)
+        {
+            for (int i = 0; i < screens.Length; i++)
+            {
+                if (screens[i].Type == Screen.ScreenType.PopUp && screens[i] is PopUpScreen popUpScreen)
+                {
+                    popUpScreen.SetupPopUp(buttonSettings);
+                    popUpScreen.gameObject.SetActive(true);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Closes the pop-up window.
+        /// </summary>
+        internal void ClosePopUp()
+        {
+            for (int i = 0; i < screens.Length; i++)
+            {
+                if (screens[i].Type == Screen.ScreenType.PopUp)
+                {
+                    screens[i].gameObject.SetActive(false);
+                    break;
+                }
             }
         }
 
