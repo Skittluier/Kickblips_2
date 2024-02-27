@@ -124,6 +124,7 @@ namespace KickblipsTwo
         {
             bool midiFileFetched = false;
             bool trackFileFetched = false;
+            int bpm = 125;
 
             FileHandler.HighlightFolder(songTitle);
             FileHandler.FetchMidi((file) =>
@@ -133,7 +134,6 @@ namespace KickblipsTwo
                 // Checking if the midi files can be checked.
                 if (midiFile.TracksCount > 0)
                 {
-                    int bpm = 125;
                     int ticksPerMinute = bpm * midiFile.TicksPerQuarterNote;
                     float ticksPerSecond = ticksPerMinute / 60;
 
@@ -142,7 +142,11 @@ namespace KickblipsTwo
                         for (int j = 0; j < midiFile.Tracks[i].MidiEvents.Count; j++)
                         {
                             if (midiFile.Tracks[i].MidiEvents[j].MetaEventType == MetaEventType.Tempo)
+                            {
                                 bpm = midiFile.Tracks[i].MidiEvents[j].Note;
+                                ticksPerMinute = bpm * midiFile.TicksPerQuarterNote;
+                                ticksPerSecond = ticksPerMinute / 60;
+                            }
 
                             // Filling the midi events array.
                             if (midiFile.Tracks[i].MidiEvents[j].MidiEventType == MidiEventType.NoteOn)
@@ -196,7 +200,8 @@ namespace KickblipsTwo
 
                         levelStarted = true;
 
-                        yield return new WaitForSeconds(inputScroller.TransitionTime - InputScrollerCorrectionTime);
+                        // The InputScrollerCorrectionTime is based on 60BPM. So it will be adjusted based on the different in the BPM.
+                        yield return new WaitForSeconds(inputScroller.TransitionTime - InputScrollerCorrectionTime * (bpm / 60));
 
                         AudioManager.PlayMusic();
                         StartCoroutine(DoStopSongDelayed());
