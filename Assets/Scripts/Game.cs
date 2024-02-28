@@ -150,7 +150,7 @@ namespace KickblipsTwo
 
                             // Filling the midi events array.
                             if (midiFile.Tracks[i].MidiEvents[j].MidiEventType == MidiEventType.NoteOn)
-                                midiEvents.Add(new KickblipsTwo.MidiEvent(ticksPerSecond, midiFile.Tracks[i].MidiEvents[j]));
+                                midiEvents.Add(new MidiEvent(ticksPerSecond, midiFile.Tracks[i].MidiEvents[j]));
                         }
 
                     midiFileFetched = true;
@@ -377,12 +377,20 @@ namespace KickblipsTwo
                     {
                         midiEvents[i].Spawn();
 
-                        KickblipsTwo.MidiEvent secondMidiEvent = null;
+                        MidiEvent secondMidiEvent = null;
                         if (i + 1 < midiEvents.Count && midiEvents[i+1].Time == midiEvents[i].Time)
                         {
                             // Checking if there is a second input combination there. Is so, add it to the spawn input combination method.
                             secondMidiEvent = midiEvents[i+1];
                             secondMidiEvent.Spawn();
+                        }
+
+                        // Would the note like to be on the right side? Then swap the midi events!
+                        if (secondMidiEvent != null && inputManager.NoteIsPreferablyOnRightSide(midiEvents[i].Note))
+                        {
+                            MidiEvent midiEvent = secondMidiEvent;
+                            secondMidiEvent = midiEvents[i];
+                            midiEvents[i] = midiEvent;
                         }
 
                         inputScroller.SpawnInputCombination(midiEvents[i], secondMidiEvent, inputManager);
