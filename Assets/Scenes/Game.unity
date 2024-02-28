@@ -3352,6 +3352,15 @@ MonoBehaviour:
   previewSFXClip: {fileID: 8300000, guid: bd176af61c6d1d546b2b7f4b174633e3, type: 3}
   musicSliderValueFormat: '{0:0} dB'
   sfxSliderValueFormat: '{0:0} dB'
+  changeResolutionConfirmTitle: Change Resolution
+  changeResolutionConfirmMessage: 'Are you sure you want to change the resolution
+    to:
+
+
+    {0}x{1}'
+  dataResetConfirmTitle: COMPLETE Data Reset
+  dataResetConfirmMessage: "Are you sure you want to reset ALL YOUR DATA?\n It will
+    be FOREVER lost and can never be recovered anymore!!"
 --- !u!1 &462451354
 GameObject:
   m_ObjectHideFlags: 0
@@ -9414,7 +9423,7 @@ MonoBehaviour:
   screenType: 0
   resultsScreenPopUpDelay: 2
   maxScoreDistance: 130
-  inputListenDuration: 0.5
+  inputListenDuration: 0.1
   hpRecoveryAmount: 10
   hpDepletionAmount: 5
 --- !u!4 &1722282686
