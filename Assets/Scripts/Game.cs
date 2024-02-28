@@ -283,7 +283,7 @@ namespace KickblipsTwo
                 HPBar.UpdateHPBarStatus(Mathf.Clamp(HPBar.PlayerHealth - hpDepletionAmount, 0, 100));
                 ComboCounter.ResetCombo();
 
-                // Player health 0? Then you lose, if 
+                // Player health 0? Then you lose.
                 if (HPBar.PlayerHealth <= 0)
                     NoHealthLeft();
             }
@@ -386,9 +386,6 @@ namespace KickblipsTwo
                         }
 
                         inputScroller.SpawnInputCombination(midiEvents[i], secondMidiEvent, inputManager);
-
-                        upcomingInputCombination = inputCombinationPool.VisibleInputCombinations[0];
-                        upcomingInputCombinationUID = upcomingInputCombination.UID;
                         StopListeningToInput();
                     }
                 }
@@ -396,47 +393,67 @@ namespace KickblipsTwo
                 // Checking if there's any input from the player.
                 if (inputCombinationPool.VisibleInputCombinations.Count > 0)
                 {
-                    float targetDistance = upcomingInputCombination.transform.position.y - inputScroller.InputTargetPosition.position.y;
-                    float targetDistanceAbsolute = Mathf.Abs(targetDistance);
+                    float smallestDistance = float.MaxValue;
+
+                    for (int i = 0; i < inputCombinationPool.VisibleInputCombinations.Count; i++)
+                    {
+                        float targetDistance = inputCombinationPool.VisibleInputCombinations[i].transform.position.y - inputScroller.InputTargetPosition.position.y;
+                        float targetDistanceAbsolute = Mathf.Abs(targetDistance);
+
+                        // Checking if the distance is the smallest distance of them all.
+                        if (smallestDistance > targetDistanceAbsolute && targetDistanceAbsolute < maxScoreDistance)
+                        {
+                            upcomingInputCombination = inputCombinationPool.VisibleInputCombinations[i];
+                            upcomingInputCombinationUID = upcomingInputCombination.UID;
+
+                            smallestDistance = targetDistanceAbsolute;
+                        }
+                    }
 
                     // Calculates the score and possibly give the player a score for this.
-                    if (checkInput)
+                    if (checkInput && upcomingInputCombination != null)
                     {
                         checkInput = false;
 
-                        if (targetDistanceAbsolute < maxScoreDistance)
+                        // Listen to input with a duration.
+                        ListenToInput((inputIsOK) =>
                         {
-                            // Listen to input with a duration.
-                            ListenToInput((inputIsOK) =>
+                            upcomingInputCombinationHit = true;
+
+                            // If both inputs are fine, then the distance may be calculated for the input score.
+                            if (inputIsOK)
                             {
-                                upcomingInputCombinationHit = true;
+                                int scoreAdd = (int)(Mathf.Abs(Mathf.Abs(upcomingInputCombination.transform.position.y - inputScroller.InputTargetPosition.position.y) / maxScoreDistance - 1) * 100);
 
-                                // If both inputs are fine, then the distance may be calculated for the input score.
-                                if (inputIsOK)
-                                {
-                                    int scoreAdd = (int)(Mathf.Abs(Mathf.Abs(upcomingInputCombination.transform.position.y - inputScroller.InputTargetPosition.position.y) / maxScoreDistance - 1) * 100);
+                                NotesHit++;
 
-                                    NotesHit++;
+                                ScoreCounter.UpdateScoreCounter(ScoreCounter.Score + scoreAdd);
+                                ComboCounter.IncreaseComboCount();
+                                inputCombinationPool.ReturnToPool(upcomingInputCombination);
+                                HPBar.UpdateHPBarStatus(Mathf.Clamp(HPBar.PlayerHealth + hpRecoveryAmount, 0, 100));
 
-                                    ScoreCounter.UpdateScoreCounter(ScoreCounter.Score + scoreAdd);
-                                    ComboCounter.IncreaseComboCount();
+                                upcomingInputCombination = null;
+                                upcomingInputCombinationUID = default;
+                                upcomingInputCombinationHit = false;
+                                StopListeningToInput();
+                            }
+                            else
+                            {
+                                HPBar.UpdateHPBarStatus(Mathf.Clamp(HPBar.PlayerHealth - hpDepletionAmount, 0, 100));
+                                ComboCounter.ResetCombo();
 
-                                    inputCombinationPool.ReturnToPool(upcomingInputCombination);
-                                    HPBar.UpdateHPBarStatus(Mathf.Clamp(HPBar.PlayerHealth + hpRecoveryAmount, 0, 100));
+                                inputCombinationPool.ReturnToPool(upcomingInputCombination);
+                                upcomingInputCombination = null;
+                                upcomingInputCombinationUID = default;
+                                upcomingInputCombinationHit = false;
 
-                                    upcomingInputCombination = inputCombinationPool.VisibleInputCombinations.Count > 0 ? inputCombinationPool.VisibleInputCombinations[0] : null;
-                                    upcomingInputCombinationUID = upcomingInputCombination == null ? 0 : upcomingInputCombination.UID;
-                                    upcomingInputCombinationHit = false;
-                                    StopListeningToInput();
-                                }
-                                else
-                                {
-                                    HPBar.UpdateHPBarStatus(Mathf.Clamp(HPBar.PlayerHealth - hpDepletionAmount, 0, 100));
-                                    ComboCounter.ResetCombo();
-                                    StopListeningToInput();
-                                }
-                            });
-                        }
+                                StopListeningToInput();
+
+                                // Player health 0? Then you lose.
+                                if (HPBar.PlayerHealth <= 0)
+                                    NoHealthLeft();
+                            }
+                        });
                     }
                 }
             }
