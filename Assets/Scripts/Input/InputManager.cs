@@ -1,5 +1,6 @@
 namespace KickblipsTwo.Input
 {
+    using System.Collections.Generic;
     using System.Linq;
     using UnityEngine;
     using UnityEngine.InputSystem;
@@ -13,6 +14,9 @@ namespace KickblipsTwo.Input
 
         [field: SerializeField, Tooltip("All the possible note inputs and their sprites.")]
         internal Input[] PossibleNoteInputs { get; private set; }
+
+        [field: SerializeField, Tooltip("The possible note inputs which should preferably be on the right side of the track.")]
+        private Input[] preferredRightNoteInputs;
 
         internal static InputDevice CurrentlyUsedDevice { get; private set; }
 
@@ -98,6 +102,20 @@ namespace KickblipsTwo.Input
                 else
                     actionMap.actionMaps[i].Disable();
             }
+        }
+
+        /// <summary>
+        /// Checks if the note is preferably on the right side of the track.
+        /// </summary>
+        /// <param name="noteNumber">The number of the note</param>
+        /// <returns>Is the note preferably on the right side of the track?</returns>
+        internal bool NoteIsPreferablyOnRightSide(int noteNumber)
+        {
+            for (int i = 0; i < preferredRightNoteInputs.Length; i++)
+                if (preferredRightNoteInputs[i].MidiNote == noteNumber)
+                    return true;
+
+            return false;
         }
     }
 }
