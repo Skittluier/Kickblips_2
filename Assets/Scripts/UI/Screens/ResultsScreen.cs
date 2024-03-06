@@ -39,10 +39,12 @@ namespace KickblipsTwo.UI.Screens
         /// <summary>
         /// Initializing the results.
         /// </summary>
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             songClearanceTitle.text = Game.Instance.HPBar.PlayerHealth > 0 ? songClearText : songFailText;
-            songResultText.text = string.Format(resultFormatText, FileHandler.HighlightedFolder, Game.Instance.ScoreCounter.Score, Game.Instance.ComboCounter.ComboHighscoreNo, Game.Instance.NotesHit, Game.Instance.TotalNotes, Game.Instance.CurrentDifficulty);
+            songResultText.text = string.Format(resultFormatText, FileHandler.HighlightedFolder, Game.Instance.ScoreCounter.Score, Game.Instance.ComboCounter.ComboHighscoreNo, Game.Instance.NotesHit, Game.Instance.TotalNotes, Game.Instance.PreferredDifficulty);
 
             retryButton.onClick.RemoveAllListeners();
             retryButton.onClick.AddListener(() => Game.Instance.PlaySong(FileHandler.HighlightedFolder));

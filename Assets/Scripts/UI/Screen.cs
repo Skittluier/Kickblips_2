@@ -1,6 +1,8 @@
 namespace KickblipsTwo.UI
 {
     using UnityEngine;
+    using UnityEngine.EventSystems;
+    using UnityEngine.UI;
 
     public class Screen : MonoBehaviour
     {
@@ -14,6 +16,15 @@ namespace KickblipsTwo.UI
 
         internal ScreenManager ScreenManager { get; private set; }
 
+        [SerializeField, Tooltip("The first button to be selected when this screen is being enabled.")]
+        protected Button firstSelectedButton;
+
+
+        protected virtual void OnEnable()
+        {
+            if (firstSelectedButton != null)
+                EventSystem.current.SetSelectedGameObject(firstSelectedButton.gameObject);
+        }
 
         /// <summary>
         /// Defines the screen manager.

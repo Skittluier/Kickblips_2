@@ -4,6 +4,7 @@ namespace KickblipsTwo
     using KickblipsTwo.Input;
     using KickblipsTwo.InputScroller;
     using KickblipsTwo.IO;
+    using KickblipsTwo.Platform;
     using KickblipsTwo.UI;
     using MidiParser;
     using System;
@@ -91,7 +92,9 @@ namespace KickblipsTwo
         internal int TotalNotes => midiEvents.Count;
         internal int NotesHit { get; private set; }
 
-        internal string CurrentDifficulty { get; private set; }
+        internal int PreferredDifficulty { get; set; }
+
+        private int currentDifficulty;
 
         private InputCombination upcomingInputCombination;
         private uint upcomingInputCombinationUID;
@@ -138,21 +141,22 @@ namespace KickblipsTwo
                     int ticksPerMinute = bpm * midiFile.TicksPerQuarterNote;
                     float ticksPerSecond = ticksPerMinute / 60;
 
-                    // Browsing the entire midi data to fill in critical information.
-                    for (int i = 0; i < midiFile.Tracks.Length; i++)
-                        for (int j = 0; j < midiFile.Tracks[i].MidiEvents.Count; j++)
-                        {
-                            if (midiFile.Tracks[i].MidiEvents[j].MetaEventType == MetaEventType.Tempo)
-                            {
-                                bpm = midiFile.Tracks[i].MidiEvents[j].Note;
-                                ticksPerMinute = bpm * midiFile.TicksPerQuarterNote;
-                                ticksPerSecond = ticksPerMinute / 60;
-                            }
+                    currentDifficulty = Mathf.Clamp(PreferredDifficulty, 0, midiFile.Tracks.Length - 1);
 
-                            // Filling the midi events array.
-                            if (midiFile.Tracks[i].MidiEvents[j].MidiEventType == MidiEventType.NoteOn)
-                                midiEvents.Add(new MidiEvent(ticksPerSecond, midiFile.Tracks[i].MidiEvents[j]));
+                    // Browsing the entire midi data to fill in critical information.
+                    for (int j = 0; j < midiFile.Tracks[currentDifficulty].MidiEvents.Count; j++)
+                    {
+                        if (midiFile.Tracks[currentDifficulty].MidiEvents[j].MetaEventType == MetaEventType.Tempo)
+                        {
+                            bpm = midiFile.Tracks[currentDifficulty].MidiEvents[j].Note;
+                            ticksPerMinute = bpm * midiFile.TicksPerQuarterNote;
+                            ticksPerSecond = ticksPerMinute / 60;
                         }
+
+                        // Filling the midi events array.
+                        if (midiFile.Tracks[currentDifficulty].MidiEvents[j].MidiEventType == MidiEventType.NoteOn)
+                            midiEvents.Add(new MidiEvent(ticksPerSecond, midiFile.Tracks[currentDifficulty].MidiEvents[j]));
+                    }
 
                     midiFileFetched = true;
                     CheckForStart();
@@ -267,6 +271,20 @@ namespace KickblipsTwo
 
                 // Change the screen to the results screen.
                 screenManager.ChangeScreen(UI.Screen.ScreenType.Results);
+
+                // Save the highscore if the player didn't lose.
+                if (HPBar.PlayerHealth > 0)
+                {
+                    PlatformHandler.SetHighscore(FileHandler.HighlightedFolder, ScoreCounter.Score, (result) =>
+                    {
+                        if (!result)
+                            Debug.LogError("[StopSong] Could not save the highscore.");
+                        else
+                            for (int i = 0; i < SongInfoManager.SongList.Count; i++)
+                                if (Equals(SongInfoManager.SongList[i].Name, FileHandler.HighlightedFolder))
+                                    SongInfoManager.SongList[i].Highscore = ScoreCounter.Score;
+                    });
+                }
 
                 // Disable all possible game input.
                 for (int i = 0; i < inputManager.PossibleNoteInputs.Length; i++)
