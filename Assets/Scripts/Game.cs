@@ -18,7 +18,7 @@ namespace KickblipsTwo
         internal static Game Instance { get; private set; }
 
         // The time that needs to be retracted from the InputScroller's TransitionTime to correctly start the first beat.
-        public const float InputScrollerCorrectionTime = 0.1406145f;
+        public const float InputScrollerCorrectionTime = 0.5f;
 
         public static MidiFile midiFile;
 
@@ -63,6 +63,7 @@ namespace KickblipsTwo
 
         private float listenToInputEndTime;
         private Coroutine inputListenCoroutine;
+        private Coroutine stopSongCoroutine;
 
         [Header("Health settings")]
         [SerializeField, Tooltip("The amount of health that will be recovered whenever the player hits a good combination.")]
@@ -86,7 +87,7 @@ namespace KickblipsTwo
         /// </summary>
         private bool checkInput;
 
-        private List<KickblipsTwo.MidiEvent> midiEvents = new List<KickblipsTwo.MidiEvent>();
+        private List<MidiEvent> midiEvents = new List<MidiEvent>();
         internal int TotalNotes => midiEvents.Count;
         internal int NotesHit { get; private set; }
 
@@ -200,11 +201,11 @@ namespace KickblipsTwo
 
                         levelStarted = true;
 
-                        // The InputScrollerCorrectionTime is based on 60BPM. So it will be adjusted based on the different in the BPM.
-                        yield return new WaitForSeconds(inputScroller.TransitionTime - InputScrollerCorrectionTime * (bpm / 60));
+                        // The InputScrollerCorrectionTime is based on 100BPM. So it will be adjusted based on the different in the BPM.
+                        yield return new WaitForSeconds(inputScroller.TransitionTime - InputScrollerCorrectionTime * (bpm * 0.01f));
 
                         AudioManager.PlayMusic();
-                        StartCoroutine(DoStopSongDelayed());
+                        stopSongCoroutine = StartCoroutine(DoStopSongDelayed());
 
                         IEnumerator DoStopSongDelayed()
                         {
@@ -249,6 +250,12 @@ namespace KickblipsTwo
         /// <param name="immediateStop">Immediately stops everything and shows the result screen.</param>
         private void StopSong(bool immediateStop = false)
         {
+            if (stopSongCoroutine != null)
+            {
+                StopCoroutine(stopSongCoroutine);
+                stopSongCoroutine = null;
+            }
+
             levelStarted = false;
             AudioManager.StopMusic();
 
