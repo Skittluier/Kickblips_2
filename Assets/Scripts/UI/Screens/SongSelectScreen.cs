@@ -1,15 +1,20 @@
 namespace KickblipsTwo.UI.Screens
 {
     using KickblipsTwo.IO;
+    using KickblipsTwo.Platform;
     using KickblipsTwo.UI.Screens.SongSelection;
     using System.Collections;
+    using System.Collections.Generic;
     using System.IO;
     using TMPro;
     using UnityEngine;
+    using UnityEngine.EventSystems;
+    using UnityEngine.InputSystem;
     using UnityEngine.UI;
 
     public class SongSelectScreen : UI.Screen
     {
+        [Header("References")]
         [SerializeField, Tooltip("The loading text.")]
         private TMP_Text loadingText;
 
@@ -24,6 +29,19 @@ namespace KickblipsTwo.UI.Screens
 
         [SerializeField, Tooltip("The options button")]
         private Button optionsButton;
+
+        [Header("Settings")]
+        [SerializeField, Tooltip("Difficulty names")]
+        private string[] difficulties;
+
+        [SerializeField, Tooltip("The control for changing difficulty.")]
+        private InputActionReference difficultyChangeAction;
+
+        private List<SongItemWindow> songItems = new List<SongItemWindow>();
+
+        private Coroutine waitForSongsCoroutine;
+
+        private GameObject lastKnownSelectedGameObject;
 
 
         private IEnumerator Start()
@@ -64,13 +82,16 @@ namespace KickblipsTwo.UI.Screens
                     {
                         bool midiValid = true;
                         validatingMidiFile = true;
+                        string originalArtistName = null;
+                        SongInfo songInfo = null;
 
                         FileHandler.HighlightFolder(directoryInfo.Name);
                         FileHandler.FetchMidi((midiFile) =>
                         {
-                            SongInfo songInfo = new SongInfo(midiFile.Tracks);
+                            songInfo = new SongInfo(directoryInfo.Name, midiFile.Tracks, originalArtistName, PlatformHandler.GetHighscore(directoryInfo.Name));
+                            SongInfoManager.SongList.Add(songInfo);
 
-                            midiValid = songInfo.ValidateSong();
+                            midiValid = songInfo.ValidateSong(out originalArtistName) == SongInfo.ErrorCode.Success;
                             validatingMidiFile = false;
                         });
 
@@ -82,7 +103,9 @@ namespace KickblipsTwo.UI.Screens
                             continue;
 
                         SongItemWindow songItemWindow = Instantiate(songItem, songContentArea);
-                        songItemWindow.SetupWindow(directoryInfo.Name, "Always Easy.", -1);
+                        songItemWindow.SetupWindow(songInfo, directoryInfo.Name, difficulties[Game.Instance.PreferredDifficulty], originalArtistName);
+
+                        songItems.Add(songItemWindow);
 
                         // We have now instantiated the object. We don't need to check any more files.
                         break;
@@ -91,6 +114,74 @@ namespace KickblipsTwo.UI.Screens
             }
 
             loadingText.gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Checks everytime the last known selected game object changes if the song supports the current difficulty.
+        /// </summary>
+        private void Update()
+        {
+            if (!Equals(lastKnownSelectedGameObject, EventSystem.current.currentSelectedGameObject))
+            {
+                lastKnownSelectedGameObject = EventSystem.current.currentSelectedGameObject;
+
+                if (lastKnownSelectedGameObject.GetComponent<SongItemWindow>() is SongItemWindow songItemWindow && songItemWindow.SongInfo.Tracks.Length < Game.Instance.PreferredDifficulty)
+                    Game.Instance.PreferredDifficulty = 0;
+            }
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            difficultyChangeAction.action.started += OnDifficultyChanged;
+            difficultyChangeAction.action.Enable();
+
+            waitForSongsCoroutine = StartCoroutine(DoWaitForSongs());
+            IEnumerator DoWaitForSongs()
+            {
+                // Wait for those songs.
+                while (loadingText.gameObject.activeInHierarchy)
+                    yield return null;
+
+                // Song items initialized? Then select the first game object.
+                if (firstSelectedButton == null)
+                    EventSystem.current.SetSelectedGameObject(songItems[0].gameObject);
+
+                for (int i = 0; i < songItems.Count; i++)
+                    songItems[i].UpdateHighscore(songItems[i].SongInfo.Highscore);
+            }
+        }
+
+        private void OnDisable()
+        {
+            difficultyChangeAction.action.Disable();
+
+            if (waitForSongsCoroutine != null)
+            {
+                StopCoroutine(waitForSongsCoroutine);
+                waitForSongsCoroutine = null;
+            }
+        }
+
+        /// <summary>
+        /// Will be executed whenever the difficulty changes.
+        /// </summary>
+        private void OnDifficultyChanged(InputAction.CallbackContext obj)
+        {
+            Game.Instance.PreferredDifficulty++;
+
+            if (Game.Instance.PreferredDifficulty >= difficulties.Length)
+                Game.Instance.PreferredDifficulty = 0;
+
+            string difficultyName = difficulties[Game.Instance.PreferredDifficulty];
+
+            Debug.Log("[SongSelectScreen] Change difficulty to: " + difficultyName);
+
+            // Only change difficulty when it's supported!
+            for (int i = 0; i < songItems.Count; i++)
+                if (songItems[i].SongInfo.Tracks.Length > Game.Instance.PreferredDifficulty)
+                    songItems[i].UpdateDifficulty(difficultyName);
         }
     }
 }
