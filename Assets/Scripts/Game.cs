@@ -97,8 +97,6 @@ namespace KickblipsTwo
         private int currentDifficulty;
 
         private InputCombination upcomingInputCombination;
-        private uint upcomingInputCombinationUID;
-        private bool upcomingInputCombinationHit;
 
 
         /// <summary>
@@ -192,8 +190,6 @@ namespace KickblipsTwo
                         NotesHit = 0;
                         checkInput = default;
                         upcomingInputCombination = null;
-                        upcomingInputCombinationUID = default;
-                        upcomingInputCombinationHit = default;
                         ScoreCounter.UpdateScoreCounter(0);
                         ComboCounter.ResetEverything();
 
@@ -303,8 +299,6 @@ namespace KickblipsTwo
         private void OnReturnToPool(InputCombination inputCombination)
         {
             // Resetting everything quickly.
-            upcomingInputCombinationUID = 0;
-            upcomingInputCombinationHit = false;
             StopListeningToInput();
         }
 
@@ -440,7 +434,6 @@ namespace KickblipsTwo
                         if (smallestDistance > targetDistanceAbsolute && targetDistanceAbsolute < maxScoreDistance)
                         {
                             upcomingInputCombination = inputCombinationPool.VisibleInputCombinations[i];
-                            upcomingInputCombinationUID = upcomingInputCombination.UID;
 
                             smallestDistance = targetDistanceAbsolute;
                         }
@@ -454,8 +447,6 @@ namespace KickblipsTwo
                         // Listen to input with a duration.
                         ListenToInput((inputIsOK) =>
                         {
-                            upcomingInputCombinationHit = true;
-
                             // If both inputs are fine, then the distance may be calculated for the input score.
                             if (inputIsOK)
                             {
@@ -469,8 +460,6 @@ namespace KickblipsTwo
                                 HPBar.UpdateHPBarStatus(Mathf.Clamp(HPBar.PlayerHealth + hpRecoveryAmount, 0, 100));
 
                                 upcomingInputCombination = null;
-                                upcomingInputCombinationUID = default;
-                                upcomingInputCombinationHit = false;
                                 StopListeningToInput();
                             }
                             else
@@ -479,8 +468,6 @@ namespace KickblipsTwo
                                 DeductHealth();
 
                                 upcomingInputCombination = null;
-                                upcomingInputCombinationUID = default;
-                                upcomingInputCombinationHit = false;
 
                                 StopListeningToInput();
 
