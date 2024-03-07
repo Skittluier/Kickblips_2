@@ -76,7 +76,9 @@ namespace KickblipsTwo.InputScroller
                     if (currVal >= 1)
                     {
                         inputCombination.transform.position = new Vector2(inputCombination.transform.position.x, targetYPos);
+
                         inputCombinationPool.ReturnToPool(inputCombination);
+                        Game.Instance.DeductHealth();
                     }
 
                     yield return null;
