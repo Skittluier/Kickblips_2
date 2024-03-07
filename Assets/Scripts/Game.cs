@@ -302,21 +302,24 @@ namespace KickblipsTwo
         /// <param name="inputCombination">The input combination in question</param>
         private void OnReturnToPool(InputCombination inputCombination)
         {
-            if (Equals(inputCombination.UID, upcomingInputCombinationUID) && !upcomingInputCombinationHit)
-            {
-                // If the upcoming input combination isn't null and it's already despawned, then punish the player.
-                HPBar.UpdateHPBarStatus(Mathf.Clamp(HPBar.PlayerHealth - hpDepletionAmount, 0, 100));
-                ComboCounter.ResetCombo();
-
-                // Player health 0? Then you lose.
-                if (HPBar.PlayerHealth <= 0)
-                    NoHealthLeft();
-            }
-
             // Resetting everything quickly.
             upcomingInputCombinationUID = 0;
             upcomingInputCombinationHit = false;
             StopListeningToInput();
+        }
+
+        /// <summary>
+        /// Deducts the player health once.
+        /// </summary>
+        internal void DeductHealth()
+        {
+            // If the upcoming input combination isn't null and it's already despawned, then punish the player.
+            HPBar.UpdateHPBarStatus(Mathf.Clamp(HPBar.PlayerHealth - hpDepletionAmount, 0, 100));
+            ComboCounter.ResetCombo();
+
+            // Player health 0? Then you lose.
+            if (HPBar.PlayerHealth <= 0)
+                NoHealthLeft();
         }
 
         /// <summary>
@@ -472,10 +475,9 @@ namespace KickblipsTwo
                             }
                             else
                             {
-                                HPBar.UpdateHPBarStatus(Mathf.Clamp(HPBar.PlayerHealth - hpDepletionAmount, 0, 100));
-                                ComboCounter.ResetCombo();
-
                                 inputCombinationPool.ReturnToPool(upcomingInputCombination);
+                                DeductHealth();
+
                                 upcomingInputCombination = null;
                                 upcomingInputCombinationUID = default;
                                 upcomingInputCombinationHit = false;
