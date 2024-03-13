@@ -141,19 +141,22 @@ namespace KickblipsTwo
 
                     currentDifficulty = Mathf.Clamp(PreferredDifficulty, 0, midiFile.Tracks.Length - 1);
 
+                    // HACK: Incrementing it with one, because of a FL Studio issue.
+                    MidiTrack chosenTrack = midiFile.Tracks[1 + currentDifficulty];
+
                     // Browsing the entire midi data to fill in critical information.
-                    for (int j = 0; j < midiFile.Tracks[currentDifficulty].MidiEvents.Count; j++)
+                    for (int j = 0; j < chosenTrack.MidiEvents.Count; j++)
                     {
-                        if (midiFile.Tracks[currentDifficulty].MidiEvents[j].MetaEventType == MetaEventType.Tempo)
+                        if (chosenTrack.MidiEvents[j].MetaEventType == MetaEventType.Tempo)
                         {
-                            bpm = midiFile.Tracks[currentDifficulty].MidiEvents[j].Note;
+                            bpm = chosenTrack.MidiEvents[j].Note;
                             ticksPerMinute = bpm * midiFile.TicksPerQuarterNote;
                             ticksPerSecond = ticksPerMinute / 60;
                         }
 
                         // Filling the midi events array.
-                        if (midiFile.Tracks[currentDifficulty].MidiEvents[j].MidiEventType == MidiEventType.NoteOn)
-                            midiEvents.Add(new MidiEvent(ticksPerSecond, midiFile.Tracks[currentDifficulty].MidiEvents[j]));
+                        if (chosenTrack.MidiEvents[j].MidiEventType == MidiEventType.NoteOn)
+                            midiEvents.Add(new MidiEvent(ticksPerSecond, chosenTrack.MidiEvents[j]));
                     }
 
                     midiFileFetched = true;

@@ -180,7 +180,7 @@ namespace KickblipsTwo.UI.Screens
 
             // Only change difficulty when it's supported!
             for (int i = 0; i < songItems.Count; i++)
-                if (songItems[i].SongInfo.Tracks.Length > Game.Instance.PreferredDifficulty)
+                if (songItems[i].SongInfo.Tracks.Length - 1 > Game.Instance.PreferredDifficulty)
                     songItems[i].UpdateDifficulty(difficultyName);
         }
     }

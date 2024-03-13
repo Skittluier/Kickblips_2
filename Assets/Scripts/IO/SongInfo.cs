@@ -49,6 +49,7 @@ namespace KickblipsTwo.IO
 
         /// <summary>
         /// Checks if the amount of tracks is valid and the appropriate metadata is available.
+        /// In the entire process we're skipping the first track, because of a FL Studio issue.
         /// </summary>
         /// <param name="originalArtistName">The name of the original artist who made this song</param>
         /// <returns>The error code returning after validating the song.</returns>
@@ -57,15 +58,15 @@ namespace KickblipsTwo.IO
             originalArtistName = null;
 
             // Checking if there is at least one track.
-            if (Tracks.Length < 1)
+            if (Tracks.Length < 2)
                 return ErrorCode.TrackIncorrectLength;
 
-            for (int i = 0; i < Tracks.Length; i++)
+            for (int i = 1; i < Tracks.Length; i++)
                 if (Tracks[i].MidiEvents.Count == 0)
                     return ErrorCode.TrackNoMidiEvents;
 
             // Looking for an artist name.
-            for (int i = 0; i < Tracks.Length; i++)
+            for (int i = 1; i < Tracks.Length; i++)
                 for (int j = 0; j < Tracks[i].TextEvents.Count; j++)
                     if (Tracks[i].TextEvents[j].TextEventType == MidiParser.TextEventType.TrackName)
                         originalArtistName = Tracks[i].TextEvents[j].Value;
