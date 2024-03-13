@@ -145,8 +145,10 @@ namespace KickblipsTwo.UI.Screens
                     yield return null;
 
                 // Song items initialized? Then select the first game object.
-                if (firstSelectedButton == null)
+                if (firstSelectedButton == null && songItems.Count > 0)
                     EventSystem.current.SetSelectedGameObject(songItems[0].gameObject);
+                else if (songItems.Count == 0)
+                    EventSystem.current.SetSelectedGameObject(quitButton.gameObject);
 
                 for (int i = 0; i < songItems.Count; i++)
                     songItems[i].UpdateHighscore(songItems[i].SongInfo.Highscore);

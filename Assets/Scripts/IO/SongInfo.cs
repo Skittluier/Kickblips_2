@@ -1,14 +1,15 @@
-using System.Diagnostics;
-
 namespace KickblipsTwo.IO
 {
+    using MidiParser;
+
     internal class SongInfo
     {
         internal enum ErrorCode
         {
             Success,
             TrackIncorrectLength,
-            TrackNoMidiEvents
+            TrackNoMidiEvents,
+            NoTempoDefined
         }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace KickblipsTwo.IO
         /// <param name="trackName">The name of the track.</param>
         /// <param name="tracks">The tracks defined incl. the metadata.</param>
         /// <param name="originalArtistName">The name of the original artist.</param>
-        internal SongInfo(string trackName, MidiParser.MidiTrack[] tracks, string originalArtistName, int highscore)
+        internal SongInfo(string trackName, MidiTrack[] tracks, string originalArtistName, int highscore)
         {
             Name = trackName;
             Tracks = tracks;
@@ -58,6 +59,7 @@ namespace KickblipsTwo.IO
         internal ErrorCode ValidateSong(out string originalArtistName)
         {
             originalArtistName = null;
+            int? bpm = null;
 
             // Checking if there is at least one track.
             if (Tracks.Length < 2)
@@ -68,9 +70,18 @@ namespace KickblipsTwo.IO
                     return ErrorCode.TrackNoMidiEvents;
 
             // Looking for an artist name.
-                for (int i = 0; i < Tracks[1].TextEvents.Count; i++)
-                    if (Tracks[1].TextEvents[i].TextEventType == MidiParser.TextEventType.TrackName)
-                        originalArtistName = Tracks[1].TextEvents[i].Value;
+            for (int i = 0; i < Tracks[1].TextEvents.Count; i++)
+                if (Tracks[1].TextEvents[i].TextEventType == TextEventType.TrackName)
+                    originalArtistName = Tracks[1].TextEvents[i].Value;
+
+            // Looking for the tempo.
+            for (int j = 0; j < Tracks[0].MidiEvents.Count; j++)
+                if (Tracks[0].MidiEvents[j].MetaEventType == MetaEventType.Tempo)
+                    bpm = Tracks[0].MidiEvents[j].Note;
+
+            // No BPM? Then the tempo isn't defined.
+            if (!bpm.HasValue)
+                return ErrorCode.NoTempoDefined;
 
             return ErrorCode.Success;
         }

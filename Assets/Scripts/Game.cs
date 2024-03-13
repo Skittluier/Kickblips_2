@@ -126,7 +126,7 @@ namespace KickblipsTwo
         {
             bool midiFileFetched = false;
             bool trackFileFetched = false;
-            int bpm = 125;
+            int bpm = 0;
 
             FileHandler.HighlightFolder(songTitle);
             FileHandler.FetchMidi((file) =>
@@ -136,24 +136,24 @@ namespace KickblipsTwo
                 // Checking if the midi files can be checked.
                 if (midiFile.TracksCount > 0)
                 {
-                    int ticksPerMinute = bpm * midiFile.TicksPerQuarterNote;
-                    float ticksPerSecond = ticksPerMinute / 60;
+                    float ticksPerSecond = 0;
 
                     currentDifficulty = Mathf.Clamp(PreferredDifficulty, 0, midiFile.Tracks.Length - 1);
 
                     // HACK: Incrementing it with one, because of a FL Studio issue.
                     MidiTrack chosenTrack = midiFile.Tracks[1 + currentDifficulty];
 
-                    // Browsing the entire midi data to fill in critical information.
-                    for (int j = 0; j < chosenTrack.MidiEvents.Count; j++)
-                    {
-                        if (chosenTrack.MidiEvents[j].MetaEventType == MetaEventType.Tempo)
+                    for (int i = 0; i < midiFile.Tracks[0].MidiEvents.Count; i++)
+                        if (midiFile.Tracks[0].MidiEvents[i].MetaEventType == MetaEventType.Tempo)
                         {
-                            bpm = chosenTrack.MidiEvents[j].Note;
-                            ticksPerMinute = bpm * midiFile.TicksPerQuarterNote;
+                            bpm = midiFile.Tracks[0].MidiEvents[i].Note;
+                            int ticksPerMinute = bpm * midiFile.TicksPerQuarterNote;
                             ticksPerSecond = ticksPerMinute / 60;
                         }
 
+                    // Browsing the entire midi data to fill in critical information.
+                    for (int j = 0; j < chosenTrack.MidiEvents.Count; j++)
+                    {
                         // Filling the midi events array.
                         if (chosenTrack.MidiEvents[j].MidiEventType == MidiEventType.NoteOn)
                             midiEvents.Add(new MidiEvent(ticksPerSecond, chosenTrack.MidiEvents[j]));
