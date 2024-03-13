@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace KickblipsTwo.IO
 {
     internal class SongInfo
@@ -66,10 +68,9 @@ namespace KickblipsTwo.IO
                     return ErrorCode.TrackNoMidiEvents;
 
             // Looking for an artist name.
-            for (int i = 1; i < Tracks.Length; i++)
-                for (int j = 0; j < Tracks[i].TextEvents.Count; j++)
-                    if (Tracks[i].TextEvents[j].TextEventType == MidiParser.TextEventType.TrackName)
-                        originalArtistName = Tracks[i].TextEvents[j].Value;
+                for (int i = 0; i < Tracks[1].TextEvents.Count; i++)
+                    if (Tracks[1].TextEvents[i].TextEventType == MidiParser.TextEventType.TrackName)
+                        originalArtistName = Tracks[1].TextEvents[i].Value;
 
             return ErrorCode.Success;
         }
