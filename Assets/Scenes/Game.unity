@@ -6933,10 +6933,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 87281fd5bd6fb294f8b90334deedae21, type: 2}
   - {fileID: 11400000, guid: f611c22592616734088811213f2c142c, type: 2}
   preferredRightNoteInputs:
-  - {fileID: 11400000, guid: fe6657ec71085ac4e8d5204867a669eb, type: 2}
-  - {fileID: 11400000, guid: 3ecaf30bd23cfdc4680155ac44e95864, type: 2}
-  - {fileID: 11400000, guid: 87281fd5bd6fb294f8b90334deedae21, type: 2}
-  - {fileID: 11400000, guid: f611c22592616734088811213f2c142c, type: 2}
+  - {fileID: 11400000, guid: 3e58694ea5dc0db42ae87fd03471332f, type: 2}
+  - {fileID: 11400000, guid: ab465007fc446a642b8b59300dbcd085, type: 2}
+  - {fileID: 11400000, guid: 526de0d6e584c3941927cd3810c94559, type: 2}
+  - {fileID: 11400000, guid: 8d5a563dcf5d35547850288e0adcdc56, type: 2}
   actionMap: {fileID: -944628639613478452, guid: a794a5a5b0fd3c84faa9f505367501a8, type: 3}
   gameActionMapNo: 0
   uiActionMapNo: 1
