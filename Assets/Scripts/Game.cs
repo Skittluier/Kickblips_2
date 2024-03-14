@@ -89,8 +89,8 @@ namespace KickblipsTwo
         private bool checkInput;
 
         private List<MidiEvent> midiEvents = new List<MidiEvent>();
-        internal int TotalNotes => midiEvents.Count;
-        internal int NotesHit { get; private set; }
+        internal int NoteCombinations => (int)(midiEvents.Count * 0.5f);
+        internal int NoteCombinationsHit { get; private set; }
 
         internal int PreferredDifficulty { get; set; }
 
@@ -152,11 +152,12 @@ namespace KickblipsTwo
                         }
 
                     // Browsing the entire midi data to fill in critical information.
-                    for (int j = 0; j < chosenTrack.MidiEvents.Count; j++)
+                    midiEvents.Clear();
+                    for (int i = 0; i < chosenTrack.MidiEvents.Count; i++)
                     {
                         // Filling the midi events array.
-                        if (chosenTrack.MidiEvents[j].MidiEventType == MidiEventType.NoteOn)
-                            midiEvents.Add(new MidiEvent(ticksPerSecond, chosenTrack.MidiEvents[j]));
+                        if (chosenTrack.MidiEvents[i].MidiEventType == MidiEventType.NoteOn)
+                            midiEvents.Add(new MidiEvent(ticksPerSecond, chosenTrack.MidiEvents[i]));
                     }
 
                     midiFileFetched = true;
@@ -190,7 +191,7 @@ namespace KickblipsTwo
                         // Reset all the other values.
                         levelStartTime = 0;
                         listenToInputEndTime = 0;
-                        NotesHit = 0;
+                        NoteCombinationsHit = 0;
                         checkInput = default;
                         upcomingInputCombination = null;
                         ScoreCounter.UpdateScoreCounter(0);
@@ -455,7 +456,7 @@ namespace KickblipsTwo
                             {
                                 int scoreAdd = (int)(Mathf.Abs(Mathf.Abs(upcomingInputCombination.transform.position.y - inputScroller.InputTargetPosition.position.y) / maxScoreDistance - 1) * 100);
 
-                                NotesHit++;
+                                NoteCombinationsHit++;
 
                                 ScoreCounter.UpdateScoreCounter(ScoreCounter.Score + scoreAdd);
                                 ComboCounter.IncreaseComboCount();

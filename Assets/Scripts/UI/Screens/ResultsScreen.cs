@@ -47,7 +47,7 @@ namespace KickblipsTwo.UI.Screens
             base.OnEnable();
 
             songClearanceTitle.text = Game.Instance.HPBar.PlayerHealth > 0 ? songClearText : songFailText;
-            songResultText.text = string.Format(resultFormatText, FileHandler.HighlightedFolder, Game.Instance.ScoreCounter.Score, Game.Instance.ComboCounter.ComboHighscoreNo, Game.Instance.NotesHit, Game.Instance.TotalNotes, difficulties[Game.Instance.PreferredDifficulty]);
+            songResultText.text = string.Format(resultFormatText, FileHandler.HighlightedFolder, Game.Instance.ScoreCounter.Score, Game.Instance.ComboCounter.ComboHighscoreNo, Game.Instance.NoteCombinationsHit, Game.Instance.NoteCombinations, difficulties[Game.Instance.PreferredDifficulty]);
 
             retryButton.onClick.RemoveAllListeners();
             retryButton.onClick.AddListener(() => Game.Instance.PlaySong(FileHandler.HighlightedFolder));
