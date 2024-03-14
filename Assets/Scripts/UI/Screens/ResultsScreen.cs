@@ -30,6 +30,9 @@ namespace KickblipsTwo.UI.Screens
         [SerializeField, Tooltip("The formatted text for the song results.\n{0}: Song name\n{1}: Song score\n{2}: Max Combo\n{3}: Notes Hit\n{4}: Total Notes\n{5}: Difficulty"), TextArea]
         private string resultFormatText;
 
+        [SerializeField, Tooltip("Difficulty names")]
+        private string[] difficulties;
+
 
         private void Awake()
         {
@@ -44,7 +47,7 @@ namespace KickblipsTwo.UI.Screens
             base.OnEnable();
 
             songClearanceTitle.text = Game.Instance.HPBar.PlayerHealth > 0 ? songClearText : songFailText;
-            songResultText.text = string.Format(resultFormatText, FileHandler.HighlightedFolder, Game.Instance.ScoreCounter.Score, Game.Instance.ComboCounter.ComboHighscoreNo, Game.Instance.NotesHit, Game.Instance.TotalNotes, Game.Instance.PreferredDifficulty);
+            songResultText.text = string.Format(resultFormatText, FileHandler.HighlightedFolder, Game.Instance.ScoreCounter.Score, Game.Instance.ComboCounter.ComboHighscoreNo, Game.Instance.NotesHit, Game.Instance.TotalNotes, difficulties[Game.Instance.PreferredDifficulty]);
 
             retryButton.onClick.RemoveAllListeners();
             retryButton.onClick.AddListener(() => Game.Instance.PlaySong(FileHandler.HighlightedFolder));

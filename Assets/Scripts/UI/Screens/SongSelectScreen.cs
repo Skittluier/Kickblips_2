@@ -157,6 +157,7 @@ namespace KickblipsTwo.UI.Screens
 
         private void OnDisable()
         {
+            difficultyChangeAction.action.started -= OnDifficultyChanged;
             difficultyChangeAction.action.Disable();
 
             if (waitForSongsCoroutine != null)
