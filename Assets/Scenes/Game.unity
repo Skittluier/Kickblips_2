@@ -8404,7 +8404,7 @@ MonoBehaviour:
   difficulties:
   - Normal
   - Hard
-  difficultyChangeAction: {fileID: -6571646404993436657, guid: a794a5a5b0fd3c84faa9f505367501a8, type: 3}
+  difficultyChangeAction: {fileID: -7810307502425561302, guid: a794a5a5b0fd3c84faa9f505367501a8, type: 3}
 --- !u!1 &1471399926
 GameObject:
   m_ObjectHideFlags: 0
