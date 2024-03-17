@@ -46,10 +46,10 @@ MonoBehaviour:
     constantsFileLocation: Assets\SuperUnityBuild
   _productParameters:
     buildCounter: 0
-    buildVersion: 0.0.5
-    versionTemplate: 0.0.$BUILD
+    buildVersion: 0.1
+    versionTemplate: 0.1
     autoGenerate: 0
-    syncWithPlayerSettings: 0
+    syncWithPlayerSettings: 1
   _releaseTypeList:
     releaseTypes:
     - typeName: (Itch.io) Release
