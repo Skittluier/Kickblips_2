@@ -52,19 +52,31 @@ MonoBehaviour:
     syncWithPlayerSettings: 0
   _releaseTypeList:
     releaseTypes:
-    - typeName: Release
+    - typeName: (Itch.io) Release
       bundleIdentifier: com.Kickblips.Kickblips2
       companyName: Kickblips
       productName: Kickblips 2
       syncAppNameWithProduct: 1
       appBuildName: Kickblips 2
       buildOptions: 0
-      customDefines: 
+      customDefines: DISABLESTEAMWORKS
       sceneList:
         releaseScenes:
         - fileGUID: 9c00aa2f8dbe03b4cb87f3516cbf0ed5
           sceneActive: 1
-    - typeName: Development
+    - typeName: (Itch.io) Development
+      bundleIdentifier: com.Kickblips.Kickblips2
+      companyName: Kickblips
+      productName: Kickblips 2
+      syncAppNameWithProduct: 1
+      appBuildName: Kickblips 2
+      buildOptions: 513
+      customDefines: DISABLESTEAMWORKS
+      sceneList:
+        releaseScenes:
+        - fileGUID: 9c00aa2f8dbe03b4cb87f3516cbf0ed5
+          sceneActive: 1
+    - typeName: (Steam) Development
       bundleIdentifier: com.Kickblips.Kickblips2
       companyName: Kickblips
       productName: Kickblips 2
@@ -73,41 +85,111 @@ MonoBehaviour:
       buildOptions: 513
       customDefines: 
       sceneList:
-        releaseScenes:
-        - fileGUID: 9c00aa2f8dbe03b4cb87f3516cbf0ed5
-          sceneActive: 1
+        releaseScenes: []
+    - typeName: (Steam) Release
+      bundleIdentifier: com.Kickblips.Kickblips2
+      companyName: Kickblips
+      productName: Kickblips 2
+      syncAppNameWithProduct: 1
+      appBuildName: Kickblips 2
+      buildOptions: 0
+      customDefines: 
+      sceneList:
+        releaseScenes: []
+    - typeName: (Standalone) Development
+      bundleIdentifier: com.Kickblips.Kickblips2
+      companyName: Kickblips
+      productName: Kickblips 2
+      syncAppNameWithProduct: 1
+      appBuildName: Kickblips 2
+      buildOptions: 513
+      customDefines: DISABLESTEAMWOKRS
+      sceneList:
+        releaseScenes: []
   _platformList:
     platforms:
     - {fileID: -8257861744592801204}
     - {fileID: 7872502409054965341}
   _projectConfigurations:
     configSet:
-      _Buckets: 05000000ffffffffffffffff0e000000ffffffffffffffffffffffffffffffffffffffff10000000ffffffffffffffffffffffffffffffff0a0000000400000001000000ffffffff110000000b0000000f00000003000000ffffffffffffffffffffffffffffffffffffffffffffffff0900000007000000ffffffffffffffff0d00000006000000ffffffffffffffffffffffff
-      _HashCodes: f27e482d6d38f6476da5e235fadfe86db3f3dc637a64f009878a7279510e9f592d6dfd48ee76e108a728bd13b7d47a29ea10ca7f71c76776f665e40829c6d86083c47952a767614900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-      _Next: ffffffffffffffffffffffffffffffffffffffff00000000ffffffffffffffffffffffffffffffff08000000ffffffffffffffff02000000ffffffffffffffffffffffff0c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-      _Count: 18
-      _Version: 18
+      _Buckets: ffffffffffffffffffffffffffffffffffffffffffffffff0e000000ffffffffffffffffffffffffffffffff28000000ffffffffffffffff160000001e000000ffffffff0b000000ffffffffffffffffffffffff070000001b0000000c000000ffffffffffffffff29000000ffffffff27000000ffffffffffffffffffffffffffffffffffffffffffffffff26000000ffffffffffffffffffffffffffffffffffffffff03000000ffffffffffffffff12000000ffffffff18000000ffffffff1500000011000000ffffffffffffffffffffffffffffffff2a000000ffffffffffffffffffffffff2b0000002500000020000000ffffffffffffffff21000000ffffffff1a000000ffffffff1f0000002300000019000000ffffffffffffffff09000000ffffffff1400000013000000ffffffff04000000ffffffff10000000ffffffffffffffff22000000ffffffff060000000a000000ffffffff0f0000002c000000
+      _HashCodes: 81f18e3f7c54c26d6206a23597e0674cbeed661ea373654376ebd7087041703d3c48e4623f7f564078d10f0162d2752c6dad6a1d464acc4eedf15d271ae0616404946b2578c6cc4a6fd0d92bc85692533269fe411d416d4476d57c239dc674604a6c123954163b34c89ecc7e51d2476a2c855b2c92a08f29e76f1e4e8e1fbd70f3c33857461e2e5b205c9659ec7b762abc3f481ff3a7cb0d7365b20d54d5e3183ddd833b38550e5c5d271827af88777f339f3d030000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _Next: ffffffffffffffffffffffffffffffffffffffffffffffff05000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff000000000d000000ffffffffffffffffffffffff08000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1c000000ffffffffffffffffffffffffffffffffffffffff01000000ffffffff170000001d000000ffffffff24000000ffffffff020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+      _Count: 45
+      _Version: 45
       _FreeList: -1
       _FreeCount: 0
       _Keys:
-      - Release/WebGL/WebGL/IL2CPP
-      - Release/WebGL/WebGL
-      - Release/WebGL
-      - Release/PC/Windows x86 (App)/IL2CPP
-      - Release/PC/Windows x86 (App)
-      - Release/PC/Windows x64 (App)/IL2CPP
-      - Release/PC/Windows x64 (App)
-      - Release/PC
-      - Release
-      - Development/WebGL/WebGL/IL2CPP
-      - Development/WebGL/WebGL
-      - Development/WebGL
-      - Development/PC/Windows x86 (App)/IL2CPP
-      - Development/PC/Windows x86 (App)
-      - Development/PC/Windows x64 (App)/IL2CPP
-      - Development/PC/Windows x64 (App)
-      - Development/PC
-      - Development
+      - (Itch.io) Release/WebGL/WebGL/IL2CPP
+      - (Itch.io) Release/WebGL/WebGL
+      - (Itch.io) Release/WebGL
+      - (Itch.io) Release/PC/Windows x86 (App)/IL2CPP
+      - (Itch.io) Release/PC/Windows x86 (App)
+      - (Itch.io) Release/PC/Windows x64 (App)/IL2CPP
+      - (Itch.io) Release/PC/Windows x64 (App)
+      - (Itch.io) Release/PC
+      - (Itch.io) Release
+      - (Itch.io) Development/WebGL/WebGL/IL2CPP
+      - (Itch.io) Development/WebGL/WebGL
+      - (Itch.io) Development/WebGL
+      - (Itch.io) Development/PC/Windows x86 (App)/IL2CPP
+      - (Itch.io) Development/PC/Windows x86 (App)
+      - (Itch.io) Development/PC/Windows x64 (App)/IL2CPP
+      - (Itch.io) Development/PC/Windows x64 (App)
+      - (Itch.io) Development/PC
+      - (Itch.io) Development
+      - (Steam) Development/WebGL/WebGL/IL2CPP
+      - (Steam) Development/WebGL/WebGL
+      - (Steam) Development/WebGL
+      - (Steam) Development/PC/Windows x86 (App)/IL2CPP
+      - (Steam) Development/PC/Windows x86 (App)
+      - (Steam) Development/PC/Windows x64 (App)/IL2CPP
+      - (Steam) Development/PC/Windows x64 (App)
+      - (Steam) Development/PC
+      - (Steam) Development
+      - (Steam) Release/WebGL/WebGL/IL2CPP
+      - (Steam) Release/WebGL/WebGL
+      - (Steam) Release/WebGL
+      - (Steam) Release/PC/Windows x86 (App)/IL2CPP
+      - (Steam) Release/PC/Windows x86 (App)
+      - (Steam) Release/PC/Windows x64 (App)/IL2CPP
+      - (Steam) Release/PC/Windows x64 (App)
+      - (Steam) Release/PC
+      - (Steam) Release
+      - (Standalone) Development/WebGL/WebGL/IL2CPP
+      - (Standalone) Development/WebGL/WebGL
+      - (Standalone) Development/WebGL
+      - (Standalone) Development/PC/Windows x86 (App)/IL2CPP
+      - (Standalone) Development/PC/Windows x86 (App)
+      - (Standalone) Development/PC/Windows x64 (App)/IL2CPP
+      - (Standalone) Development/PC/Windows x64 (App)
+      - (Standalone) Development/PC
+      - (Standalone) Development
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
+      - 
       - 
       - 
       - 
@@ -132,54 +214,182 @@ MonoBehaviour:
         childKeys: []
       - enabled: 1
         childKeys:
-        - Release/WebGL/WebGL/IL2CPP
+        - (Itch.io) Release/WebGL/WebGL/IL2CPP
       - enabled: 1
         childKeys:
-        - Release/WebGL/WebGL
+        - (Itch.io) Release/WebGL/WebGL
       - enabled: 0
         childKeys: []
       - enabled: 1
         childKeys:
-        - Release/PC/Windows x86 (App)/IL2CPP
-      - enabled: 1
-        childKeys: []
-      - enabled: 1
-        childKeys:
-        - Release/PC/Windows x64 (App)/IL2CPP
-      - enabled: 1
-        childKeys:
-        - Release/PC/Windows x86 (App)
-        - Release/PC/Windows x64 (App)
-      - enabled: 1
-        childKeys:
-        - Release/WebGL
-        - Release/PC
+        - (Itch.io) Release/PC/Windows x86 (App)/IL2CPP
       - enabled: 0
         childKeys: []
       - enabled: 1
         childKeys:
-        - Development/WebGL/WebGL/IL2CPP
+        - (Itch.io) Release/PC/Windows x64 (App)/IL2CPP
       - enabled: 1
         childKeys:
-        - Development/WebGL/WebGL
+        - (Itch.io) Release/PC/Windows x86 (App)
+        - (Itch.io) Release/PC/Windows x64 (App)
+      - enabled: 1
+        childKeys:
+        - (Itch.io) Release/WebGL
+        - (Itch.io) Release/PC
       - enabled: 0
         childKeys: []
       - enabled: 1
         childKeys:
-        - Development/PC/Windows x86 (App)/IL2CPP
+        - (Itch.io) Development/WebGL/WebGL/IL2CPP
+      - enabled: 1
+        childKeys:
+        - (Itch.io) Development/WebGL/WebGL
       - enabled: 0
         childKeys: []
       - enabled: 1
         childKeys:
-        - Development/PC/Windows x64 (App)/IL2CPP
+        - (Itch.io) Development/PC/Windows x86 (App)/IL2CPP
+      - enabled: 0
+        childKeys: []
       - enabled: 1
         childKeys:
-        - Development/PC/Windows x86 (App)
-        - Development/PC/Windows x64 (App)
+        - (Itch.io) Development/PC/Windows x64 (App)/IL2CPP
       - enabled: 1
         childKeys:
-        - Development/WebGL
-        - Development/PC
+        - (Itch.io) Development/PC/Windows x86 (App)
+        - (Itch.io) Development/PC/Windows x64 (App)
+      - enabled: 1
+        childKeys:
+        - (Itch.io) Development/WebGL
+        - (Itch.io) Development/PC
+      - enabled: 0
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - (Steam) Development/WebGL/WebGL/IL2CPP
+      - enabled: 1
+        childKeys:
+        - (Steam) Development/WebGL/WebGL
+      - enabled: 0
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - (Steam) Development/PC/Windows x86 (App)/IL2CPP
+      - enabled: 0
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - (Steam) Development/PC/Windows x64 (App)/IL2CPP
+      - enabled: 1
+        childKeys:
+        - (Steam) Development/PC/Windows x86 (App)
+        - (Steam) Development/PC/Windows x64 (App)
+      - enabled: 1
+        childKeys:
+        - (Steam) Development/WebGL
+        - (Steam) Development/PC
+      - enabled: 0
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - (Steam) Release/WebGL/WebGL/IL2CPP
+      - enabled: 1
+        childKeys:
+        - (Steam) Release/WebGL/WebGL
+      - enabled: 0
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - (Steam) Release/PC/Windows x86 (App)/IL2CPP
+      - enabled: 0
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - (Steam) Release/PC/Windows x64 (App)/IL2CPP
+      - enabled: 1
+        childKeys:
+        - (Steam) Release/PC/Windows x86 (App)
+        - (Steam) Release/PC/Windows x64 (App)
+      - enabled: 1
+        childKeys:
+        - (Steam) Release/WebGL
+        - (Steam) Release/PC
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - (Standalone) Development/WebGL/WebGL/IL2CPP
+      - enabled: 1
+        childKeys:
+        - (Standalone) Development/WebGL/WebGL
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - (Standalone) Development/PC/Windows x86 (App)/IL2CPP
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - (Standalone) Development/PC/Windows x64 (App)/IL2CPP
+      - enabled: 1
+        childKeys:
+        - (Standalone) Development/PC/Windows x86 (App)
+        - (Standalone) Development/PC/Windows x64 (App)
+      - enabled: 1
+        childKeys:
+        - (Standalone) Development/WebGL
+        - (Standalone) Development/PC
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
       - enabled: 1
         childKeys: []
       - enabled: 1
