@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ec8e017a347d34188b4745d7ddf7c1, type: 3}
+  m_Name: Start
+  m_EditorClassIdentifier: 
+  visualInputs:
+  - <DeviceLayout>k__BackingField: 3
+    inputSprite: {fileID: 21300000, guid: 8bf30719618d6684d9bba6b5d1e59a5d, type: 3}
+  - <DeviceLayout>k__BackingField: 1
+    inputSprite: {fileID: 21300000, guid: 9bf5ecddb83931a43bd9e0c393b99c68, type: 3}
+  - <DeviceLayout>k__BackingField: 0
+    inputSprite: {fileID: 21300000, guid: 688f6c1f5de939648b503727251f5b54, type: 3}
+  - <DeviceLayout>k__BackingField: 2
+    inputSprite: {fileID: 21300000, guid: 7425769c564984a42a37e68542c13750, type: 3}
+  <InputActionReference>k__BackingField: {fileID: 2248664746384678231, guid: a794a5a5b0fd3c84faa9f505367501a8, type: 3}
+  <MidiNote>k__BackingField: 0

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ec8e017a347d34188b4745d7ddf7c1, type: 3}
+  m_Name: DpadLeft
+  m_EditorClassIdentifier: 
+  visualInputs:
+  - <DeviceLayout>k__BackingField: 3
+    inputSprite: {fileID: 21300000, guid: 14186a8146474e24885d52396461a881, type: 3}
+  - <DeviceLayout>k__BackingField: 1
+    inputSprite: {fileID: 21300000, guid: d26ecfd14a6a9354a895f35471b54b78, type: 3}
+  - <DeviceLayout>k__BackingField: 0
+    inputSprite: {fileID: 21300000, guid: 8508796806bc5db4398d6e44df11ed31, type: 3}
+  - <DeviceLayout>k__BackingField: 2
+    inputSprite: {fileID: 21300000, guid: 3dadf90e07235e844ae71313cc7b070f, type: 3}
+  <InputActionReference>k__BackingField: {fileID: -6786289379452058867, guid: a794a5a5b0fd3c84faa9f505367501a8, type: 3}
+  <MidiNote>k__BackingField: 65
