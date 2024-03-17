@@ -135,7 +135,7 @@ PlayerSettings:
   vulkanEnableLateAcquireNextImage: 0
   vulkanEnableCommandBufferRecycling: 1
   loadStoreDebugModeEnabled: 0
-  bundleVersion: 0.0.3
+  bundleVersion: 0.1
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -159,12 +159,12 @@ PlayerSettings:
     Standalone: com.Kickblips.Kickblips2
     WebGL: com.Maarten-Braaksma.Kickblips-2
   buildNumber:
-    Standalone: 3
+    Standalone: 5
     VisionOS: 0
-    iPhone: 3
+    iPhone: 5
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 4
+  AndroidBundleVersionCode: 6
   AndroidMinSdkVersion: 22
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -688,7 +688,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Standalone: BUILD_TYPE__STANDALONE_DEVELOPMENT;BUILD_PLATFORM_PC;BUILD_ARCH_WINDOWSX64;BUILD_BACKEND_IL2CPP;DISABLESTEAMWOKRS;STEAMWORKS_NET
+    Standalone: STEAMWORKS_NET
     WebGL: 
   additionalCompilerArguments: {}
   platformArchitecture: {}

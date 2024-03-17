@@ -45,10 +45,10 @@ MonoBehaviour:
     openFolderPostBuild: 1
     constantsFileLocation: Assets\SuperUnityBuild
   _productParameters:
-    buildCounter: 2
-    buildVersion: 0.0.2
+    buildCounter: 0
+    buildVersion: 0.0.5
     versionTemplate: 0.0.$BUILD
-    autoGenerate: 1
+    autoGenerate: 0
     syncWithPlayerSettings: 0
   _releaseTypeList:
     releaseTypes:
@@ -314,7 +314,7 @@ MonoBehaviour:
         childKeys:
         - (Steam) Release/WebGL
         - (Steam) Release/PC
-      - enabled: 1
+      - enabled: 0
         childKeys: []
       - enabled: 1
         childKeys:
@@ -322,7 +322,7 @@ MonoBehaviour:
       - enabled: 1
         childKeys:
         - (Standalone) Development/WebGL/WebGL
-      - enabled: 1
+      - enabled: 0
         childKeys: []
       - enabled: 1
         childKeys:
