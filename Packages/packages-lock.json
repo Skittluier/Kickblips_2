@@ -1,5 +1,28 @@
 {
   "dependencies": {
+    "com.github.superunitybuild.buildactions": {
+      "version": "4.0.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.github.superunitybuild.buildtool": "7.0.0"
+      },
+      "url": "https://package.openupm.com"
+    },
+    "com.github.superunitybuild.buildtool": {
+      "version": "7.0.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
+    "com.rlabrecque.steamworks.net": {
+      "version": "https://github.com/rlabrecque/Steamworks.NET.git?path=/com.rlabrecque.steamworks.net",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "37df82ec444f31a60741384b4ef46471f0fc0760"
+    },
     "com.unity.2d.animation": {
       "version": "9.0.3",
       "depth": 1,
